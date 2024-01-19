@@ -24,6 +24,7 @@ const login = async (req, res) => {
         where: { rol },
       },
     });
+    console.log(user);
 
     const roles = await Users.findOne({
       where: { userId: user.userId },
@@ -35,7 +36,7 @@ const login = async (req, res) => {
       ],
     });
 
-    // console.log(user.roles.rol);
+    // console.log(user);
     // const userRol = user.roles.map((role) => role.rol);
     // const passgenerate = await bycrypt.hash("admin", 10);
     // console.log(passgenerate);
@@ -51,16 +52,8 @@ const login = async (req, res) => {
 
     const payload = {
       userId: user.userId,
-      userEmail: user.email,
       loginRol: rol,
-      firstName: user.firstName,
-      secondName: user.secondName,
-      firstLastName: user.firstLastName,
-      secondLastName: user.secondLastName,
       username: user.username,
-      photo: user.photo,
-      roles: roles.roles,
-      ci: user.ci,
     };
 
     //Crear token JWT

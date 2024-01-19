@@ -14,6 +14,9 @@ import { Usuario } from "./data/cuentas.js";
 import { NominasArray } from "./data/nominas.js";
 import { QuizzesArray,QuestionTypesArray } from "./data/quizInsert.js";
 
+import bycrypt from "bcrypt";
+
+
 const insertRoles = async () => {
   const filePath = path.resolve(__dirname, "data", "roles.csv");
 
@@ -35,29 +38,21 @@ const insertDefaultUsers = async () => {
 
  
 
-  const users = cuentas.map(
-    ([username, password, arrayRoles, { userInfo }]) => {
-      const {
-        ci,
-        firstName,
-        secondName,
-        firstLastName,
-        secondLastName,
-        photo,
-      } = userInfo;
-
-      return {
-        username,
-        password,
-        ci,
-        firstName,
-        secondName,
-        firstLastName,
-        photo,
-        secondLastName,
-      };
-    }
-  );
+  const users = await Promise.all(cuentas.map(async ([username, password, arrayRoles, { userInfo }]) => {
+    const { ci, firstName, secondName, firstLastName, secondLastName, photo } = userInfo;
+    const passgenerate = await bycrypt.hash(password, 10);
+  
+    return {
+      username,
+      password: passgenerate, // Aquí asignamos la contraseña encriptada
+      ci,
+      firstName,
+      secondName,
+      firstLastName,
+      photo,
+      secondLastName,
+    };
+  }));
   const professionals = cuentas.map(
     ([username, password, arrayRoles, { userInfo,professionals }]) => {
       const {
@@ -152,10 +147,6 @@ for (let index = 1; index < 103; index++) {
   }
 }
 
-console.log("-----------------------------------------------------------------------------------------------")
-console.log(responses)
-
-
 await QuestionTypes.bulkCreate(QuestionTypesArray, { returning: true });
 await Quiz.bulkCreate(quizzes, { returning: true });
 await Questions.bulkCreate(QuizzesArray[0]["questions"], { returning: true });
@@ -170,7 +161,6 @@ await Nominas.bulkCreate(NominasArray, { returning: true });
       });
     })
     .flat();
-
   await UserRoles.bulkCreate(bulkUserRoles);
 };
 

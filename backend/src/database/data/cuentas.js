@@ -1,11 +1,9 @@
 export const Usuario = {
   cuentas: [
-    // ["admin", "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu", [1, 2, 3]],
-
     [
       "1106011420",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
-      [1, 2],
+      "1106011420",
+      [1, 2,4],
       {
         userInfo: {
           ci: 1106011420,
@@ -34,8 +32,8 @@ export const Usuario = {
     ],
     [
       "1104661598",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
-      [1, 2],
+      "1104661598",
+      [1, 2,4],
       {
         userInfo: {
           ci: 1104661598,
@@ -65,7 +63,7 @@ export const Usuario = {
 
     [
       "1104765209",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104765209",
       [2],
       {
         userInfo: {
@@ -94,7 +92,7 @@ export const Usuario = {
     ],
     [
       "1150058657",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150058657",
       [2],
       {
         userInfo: {
@@ -123,7 +121,7 @@ export const Usuario = {
     ],
     [
       "1104878184",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104878184",
       [2],
       {
         userInfo: {
@@ -152,7 +150,7 @@ export const Usuario = {
     ],
     [
       "1150591145",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150591145",
       [2],
       {
         userInfo: {
@@ -181,7 +179,7 @@ export const Usuario = {
     ],
     [
       "1105711038",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105711038",
       [2],
       {
         userInfo: {
@@ -210,7 +208,7 @@ export const Usuario = {
     ],
     [
       "1104393903",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104393903",
       [2],
       {
         userInfo: {
@@ -239,7 +237,7 @@ export const Usuario = {
     ],
     [
       "1150405700",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150405700",
       [2],
       {
         userInfo: {
@@ -268,7 +266,7 @@ export const Usuario = {
     ],
     [
       "1150352431",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150352431",
       [2],
       {
         userInfo: {
@@ -297,7 +295,7 @@ export const Usuario = {
     ],
     [
       "1103524185",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1103524185",
       [2],
       {
         userInfo: {
@@ -326,7 +324,7 @@ export const Usuario = {
     ],
     [
       "1105435604",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105435604",
       [2],
       {
         userInfo: {
@@ -355,7 +353,7 @@ export const Usuario = {
     ],
     [
       "1150623492",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150623492",
       [2],
       {
         userInfo: {
@@ -384,7 +382,7 @@ export const Usuario = {
     ],
     [
       "1150787867",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150787867",
       [2],
       {
         userInfo: {
@@ -413,7 +411,7 @@ export const Usuario = {
     ],
     [
       "1103938989",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1103938989",
       [2],
       {
         userInfo: {
@@ -442,7 +440,7 @@ export const Usuario = {
     ],
     [
       "1150354866",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150354866",
       [2],
       {
         userInfo: {
@@ -471,7 +469,7 @@ export const Usuario = {
     ],
     [
       "1104534548",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104534548",
       [2],
       {
         userInfo: {
@@ -500,7 +498,7 @@ export const Usuario = {
     ],
     [
       "1150054342",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150054342",
       [2],
       {
         userInfo: {
@@ -529,7 +527,7 @@ export const Usuario = {
     ],
     [
       "1105850711",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105850711",
       [2],
       {
         userInfo: {
@@ -558,7 +556,7 @@ export const Usuario = {
     ],
     [
       "1105311334",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105311334",
       [2],
       {
         userInfo: {
@@ -587,7 +585,7 @@ export const Usuario = {
     ],
     [
       "1105700668",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105700668",
       [2],
       {
         userInfo: {
@@ -616,7 +614,7 @@ export const Usuario = {
     ],
     [
       "1104313174",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104313174",
       [2],
       {
         userInfo: {
@@ -645,7 +643,7 @@ export const Usuario = {
     ],
     [
       "1106033671",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1106033671",
       [2],
       {
         userInfo: {
@@ -674,7 +672,7 @@ export const Usuario = {
     ],
     [
       "1150111506",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150111506",
       [2],
       {
         userInfo: {
@@ -703,7 +701,7 @@ export const Usuario = {
     ],
     [
       "1150898656",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150898656",
       [2],
       {
         userInfo: {
@@ -732,7 +730,7 @@ export const Usuario = {
     ],
     [
       "1104021173",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104021173",
       [2],
       {
         userInfo: {
@@ -761,7 +759,7 @@ export const Usuario = {
     ],
     [
       "1104185838",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104185838",
       [2],
       {
         userInfo: {
@@ -790,7 +788,7 @@ export const Usuario = {
     ],
     [
       "1105305823",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105305823",
       [2],
       {
         userInfo: {
@@ -819,7 +817,7 @@ export const Usuario = {
     ],
     [
       "1104722887",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104722887",
       [2],
       {
         userInfo: {
@@ -848,7 +846,7 @@ export const Usuario = {
     ],
     [
       "1104920689",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104920689",
       [2],
       {
         userInfo: {
@@ -877,7 +875,7 @@ export const Usuario = {
     ],
     [
       "1105295040",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105295040",
       [2],
       {
         userInfo: {
@@ -906,7 +904,7 @@ export const Usuario = {
     ],
     [
       "1105248197",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105248197",
       [2],
       {
         userInfo: {
@@ -935,7 +933,7 @@ export const Usuario = {
     ],
     [
       "1150467072",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150467072",
       [2],
       {
         userInfo: {
@@ -964,7 +962,7 @@ export const Usuario = {
     ],
     [
       "1150352795",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150352795",
       [2],
       {
         userInfo: {
@@ -993,7 +991,7 @@ export const Usuario = {
     ],
     [
       "1150644019",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150644019",
       [2],
       {
         userInfo: {
@@ -1022,7 +1020,7 @@ export const Usuario = {
     ],
     [
       "1720991189",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1720991189",
       [2],
       {
         userInfo: {
@@ -1051,7 +1049,7 @@ export const Usuario = {
     ],
     [
       "1900555085",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1900555085",
       [2],
       {
         userInfo: {
@@ -1080,7 +1078,7 @@ export const Usuario = {
     ],
     [
       "1104460850",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104460850",
       [2],
       {
         userInfo: {
@@ -1109,7 +1107,7 @@ export const Usuario = {
     ],
     [
       "1150594826",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150594826",
       [2],
       {
         userInfo: {
@@ -1138,7 +1136,7 @@ export const Usuario = {
     ],
     [
       "1150897542",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150897542",
       [2],
       {
         userInfo: {
@@ -1167,7 +1165,7 @@ export const Usuario = {
     ],
     [
       "1105306359",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105306359",
       [2],
       {
         userInfo: {
@@ -1196,7 +1194,7 @@ export const Usuario = {
     ],
     [
       "1726159815",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1726159815",
       [2],
       {
         userInfo: {
@@ -1225,7 +1223,7 @@ export const Usuario = {
     ],
     [
       "1105763617",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105763617",
       [2],
       {
         userInfo: {
@@ -1254,7 +1252,7 @@ export const Usuario = {
     ],
     [
       "1150441408",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150441408",
       [2],
       {
         userInfo: {
@@ -1283,7 +1281,7 @@ export const Usuario = {
     ],
     [
       "1150041513",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150041513",
       [2],
       {
         userInfo: {
@@ -1312,7 +1310,7 @@ export const Usuario = {
     ],
     [
       "1104921026",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104921026",
       [2],
       {
         userInfo: {
@@ -1341,7 +1339,7 @@ export const Usuario = {
     ],
     [
       "1106184292",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1106184292",
       [2],
       {
         userInfo: {
@@ -1370,7 +1368,7 @@ export const Usuario = {
     ],
     [
       "1150085098",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150085098",
       [2],
       {
         userInfo: {
@@ -1399,7 +1397,7 @@ export const Usuario = {
     ],
     [
       "1105832040",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105832040",
       [2],
       {
         userInfo: {
@@ -1428,7 +1426,7 @@ export const Usuario = {
     ],
     [
       "1150303913",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150303913",
       [2],
       {
         userInfo: {
@@ -1457,7 +1455,7 @@ export const Usuario = {
     ],
     [
       "1105302952",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105302952",
       [2],
       {
         userInfo: {
@@ -1486,7 +1484,7 @@ export const Usuario = {
     ],
     [
       "1105338303",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105338303",
       [2],
       {
         userInfo: {
@@ -1515,7 +1513,7 @@ export const Usuario = {
     ],
     [
       "1106034224",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1106034224",
       [2],
       {
         userInfo: {
@@ -1573,7 +1571,7 @@ export const Usuario = {
     ],
     [
       "1150897898",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150897898",
       [2],
       {
         userInfo: {
@@ -1602,7 +1600,7 @@ export const Usuario = {
     ],
     [
       "1150484358",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150484358",
       [2],
       {
         userInfo: {
@@ -1631,7 +1629,7 @@ export const Usuario = {
     ],
     [
       "1550136525",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1550136525",
       [2],
       {
         userInfo: {
@@ -1660,7 +1658,7 @@ export const Usuario = {
     ],
     [
       "1150057808",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150057808",
       [2],
       {
         userInfo: {
@@ -1689,7 +1687,7 @@ export const Usuario = {
     ],
     [
       "1150354882",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150354882",
       [2],
       {
         userInfo: {
@@ -1718,7 +1716,7 @@ export const Usuario = {
     ],
     [
       "1150519260",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150519260",
       [2],
       {
         userInfo: {
@@ -1747,7 +1745,7 @@ export const Usuario = {
     ],
     [
       "1104156110",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104156110",
       [2],
       {
         userInfo: {
@@ -1776,7 +1774,7 @@ export const Usuario = {
     ],
     [
       "1106025974",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1106025974",
       [2],
       {
         userInfo: {
@@ -1805,7 +1803,7 @@ export const Usuario = {
     ],
     [
       "1106033861",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1106033861",
       [2],
       {
         userInfo: {
@@ -1834,7 +1832,7 @@ export const Usuario = {
     ],
     [
       "1105268732",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105268732",
       [2],
       {
         userInfo: {
@@ -1863,7 +1861,7 @@ export const Usuario = {
     ],
     [
       "1105338683",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105338683",
       [2],
       {
         userInfo: {
@@ -1892,7 +1890,7 @@ export const Usuario = {
     ],
     [
       "1150399622",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150399622",
       [2],
       {
         userInfo: {
@@ -1921,7 +1919,7 @@ export const Usuario = {
     ],
     [
       "1105240723",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105240723",
       [2],
       {
         userInfo: {
@@ -1950,7 +1948,7 @@ export const Usuario = {
     ],
     [
       "1151180005",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1151180005",
       [2],
       {
         userInfo: {
@@ -1979,7 +1977,7 @@ export const Usuario = {
     ],
     [
       "1150156592",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150156592",
       [2],
       {
         userInfo: {
@@ -2008,7 +2006,7 @@ export const Usuario = {
     ],
     [
       "1105831661",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105831661",
       [2],
       {
         userInfo: {
@@ -2037,7 +2035,7 @@ export const Usuario = {
     ],
     [
       "1105307696",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105307696",
       [2],
       {
         userInfo: {
@@ -2066,7 +2064,7 @@ export const Usuario = {
     ],
     [
       "1105335960",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105335960",
       [2],
       {
         userInfo: {
@@ -2095,7 +2093,7 @@ export const Usuario = {
     ],
     [
       "1150837498",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150837498",
       [2],
       {
         userInfo: {
@@ -2124,7 +2122,7 @@ export const Usuario = {
     ],
     [
       "1105774549",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105774549",
       [2],
       {
         userInfo: {
@@ -2153,7 +2151,7 @@ export const Usuario = {
     ],
     [
       "1150056065",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150056065",
       [2],
       {
         userInfo: {
@@ -2182,7 +2180,7 @@ export const Usuario = {
     ],
     [
       "1150643177",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150643177",
       [2],
       {
         userInfo: {
@@ -2211,7 +2209,7 @@ export const Usuario = {
     ],
     [
       "1104978588",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104978588",
       [2],
       {
         userInfo: {
@@ -2240,7 +2238,7 @@ export const Usuario = {
     ],
     [
       "1104647886",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104647886",
       [2],
       {
         userInfo: {
@@ -2269,7 +2267,7 @@ export const Usuario = {
     ],
     [
       "1105215980",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105215980",
       [2],
       {
         userInfo: {
@@ -2298,7 +2296,7 @@ export const Usuario = {
     ],
     [
       "1150454302",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150454302",
       [2],
       {
         userInfo: {
@@ -2327,7 +2325,7 @@ export const Usuario = {
     ],
     [
       "1105845836",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105845836",
       [2],
       {
         userInfo: {
@@ -2356,7 +2354,7 @@ export const Usuario = {
     ],
     [
       "1104277593",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104277593",
       [2],
       {
         userInfo: {
@@ -2385,7 +2383,7 @@ export const Usuario = {
     ],
     [
       "1150598819",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150598819",
       [2],
       {
         userInfo: {
@@ -2414,7 +2412,7 @@ export const Usuario = {
     ],
     [
       "1105531907",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105531907",
       [2],
       {
         userInfo: {
@@ -2443,7 +2441,7 @@ export const Usuario = {
     ],
     [
       "1104928005",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104928005",
       [2],
       {
         userInfo: {
@@ -2472,7 +2470,7 @@ export const Usuario = {
     ],
     [
       "1104193352",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104193352",
       [2],
       {
         userInfo: {
@@ -2501,7 +2499,7 @@ export const Usuario = {
     ],
     [
       "1150910766",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150910766",
       [2],
       {
         userInfo: {
@@ -2530,7 +2528,7 @@ export const Usuario = {
     ],
     [
       "1150338737",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150338737",
       [2],
       {
         userInfo: {
@@ -2559,7 +2557,7 @@ export const Usuario = {
     ],
     [
       "1105711111",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105711111",
       [2],
       {
         userInfo: {
@@ -2588,7 +2586,7 @@ export const Usuario = {
     ],
     [
       "1150808796",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150808796",
       [2],
       {
         userInfo: {
@@ -2617,7 +2615,7 @@ export const Usuario = {
     ],
     [
       "1104458300",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104458300",
       [2],
       {
         userInfo: {
@@ -2646,7 +2644,7 @@ export const Usuario = {
     ],
     [
       "1105272692",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105272692",
       [2],
       {
         userInfo: {
@@ -2675,7 +2673,7 @@ export const Usuario = {
     ],
     [
       "1150738050",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150738050",
       [2],
       {
         userInfo: {
@@ -2704,7 +2702,7 @@ export const Usuario = {
     ],
     [
       "1150017794",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150017794",
       [2],
       {
         userInfo: {
@@ -2733,7 +2731,7 @@ export const Usuario = {
     ],
     [
       "1105918013",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105918013",
       [2],
       {
         userInfo: {
@@ -2762,7 +2760,7 @@ export const Usuario = {
     ],
     [
       "1150847778",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150847778",
       [2],
       {
         userInfo: {
@@ -2791,7 +2789,7 @@ export const Usuario = {
     ],
     [
       "1104713423",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104713423",
       [2],
       {
         userInfo: {
@@ -2820,7 +2818,7 @@ export const Usuario = {
     ],
     [
       "1150968350",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1150968350",
       [2],
       {
         userInfo: {
@@ -2849,7 +2847,7 @@ export const Usuario = {
     ],
     [
       "1105249559",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105249559",
       [2],
       {
         userInfo: {
@@ -2878,7 +2876,7 @@ export const Usuario = {
     ],
     [
       "1105265845",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105265845",
       [2],
       {
         userInfo: {
@@ -2907,7 +2905,7 @@ export const Usuario = {
     ],
     [
       "1105576423",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105576423",
       [2],
       {
         userInfo: {
@@ -2936,7 +2934,7 @@ export const Usuario = {
     ],
     [
       "1105967150",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1105967150",
       [2],
       {
         userInfo: {

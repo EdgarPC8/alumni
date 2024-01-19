@@ -26,11 +26,11 @@ const diskStorageToUpdatePhoto = multer.diskStorage({
 
     
 
-    unlink(join(__dirname, `../../userPhotos/${photoToDelete}`));
     const newPhoto = `${
       Date.now() + "-" + Math.round(Math.random() * 1e9)
     }${extname(file.originalname)}`;
-
+    
+    unlink(join(__dirname, `../../userPhotos/${photoToDelete}`));
     const updatePhotoUser = await Users.update(
       { photo: newPhoto },
       { where: { userId: req.params.userId } }
