@@ -2,7 +2,7 @@ export const Usuario = {
   cuentas: [
     [
       "1106011420",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1106011420",
       [1, 2, 4],
       {
         userInfo: {
@@ -32,7 +32,7 @@ export const Usuario = {
     ],
     [
       "1104661598",
-      "$2b$10$p49gCto6b2liCqoQoSMDyu8/EmT1t3cwJe6HALeZNgXxZHx7rJMRu",
+      "1104661598",
       [1, 2, 4],
       {
         userInfo: {

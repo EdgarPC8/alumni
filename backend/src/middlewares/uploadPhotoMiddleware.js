@@ -3,6 +3,7 @@ import { join, extname } from "path";
 import fileDirName from "../libs/file-dirname.js";
 import { unlink } from "fs/promises";
 import { Users } from "../Models/Users.js";
+import { Professionals } from "../Models/Professionals.js";
 
 const { __dirname } = fileDirName(import.meta);
 
@@ -37,12 +38,20 @@ const diskStorageToUpdatePhoto = multer.diskStorage({
     }
 
     unlink(join(__dirname, `../../userPhotos/${photoToDelete}`));
+  console.log("hola------------------------------------------------------------")
+  console.log(req.params.userId)
+
     const updatePhotoUser = await Users.update(
       { photo: newPhoto },
       { where: { userId: req.params.userId } }
     );
+    // const updatePhotProfessional= await Professionals.update(
+    //   { image: newPhoto },
+    //   { where: { id: req.params.userId } }
+    // );
     callback(null, newPhoto);
   },
+
 });
 
 const upload = multer({ storage: diskStorage }).single("photo");
