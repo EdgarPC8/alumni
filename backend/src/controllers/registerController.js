@@ -1,6 +1,6 @@
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
-
+import { Op } from "sequelize";
 import { logger } from "../log/LogActivity.js";
 import { UserRoles } from "../Models/UserRoles.js";
 
@@ -15,6 +15,20 @@ export const registerUser = async (req, res) => {
       secondLastName,
       password,
     } = req.body;
+
+    // Verificar si el nombre de usuario o CI ya existe
+    const existingUser = await Users.findOne({
+      where: {
+        [Op.or]: [
+          { username },
+          { ci },
+        ],
+      },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Nombre de usuario o CI ya registrado" });
+    }
 
     const passgenerate = await bycrypt.hash(password, 10);
 
@@ -32,7 +46,7 @@ export const registerUser = async (req, res) => {
     });
 
     // rol por defecto "profesional" cuando se registre un usuario
-    const rol = await UserRoles.create({ userId: newUser.userId, rolId: 2 });
+    const rol = await UserRoles.create({ userId: newUser.userId, roleId: 2 });
 
     logger({
       httpMethod: req.method,
@@ -40,9 +54,16 @@ export const registerUser = async (req, res) => {
       action: "Usuario registrado",
     });
 
-    res.json({ message: "usuario agregado con éxito" });
+    res.json({
+      message: "Usuario registrado con éxito",
+      user: {
+        userId: newUser.userId,
+        username: newUser.username,
+        // Otros campos que puedas querer incluir en la respuesta
+      },
+    });
   } catch (error) {
-    // manejo de errores si ocurre algún problema durante la creación del usuario
-    console.error("error al crear el usuario:", error);
+    console.error("Error al crear el usuario:", error);
+    res.status(500).json({ message: "Error al crear el usuario" });
   }
 };

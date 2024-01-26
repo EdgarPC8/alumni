@@ -24,6 +24,7 @@ export const Users = sequelize.define(
     },
     ci: {
       type: DataTypes.BIGINT,
+      unique: true,
     },
     firstName: {
       type: DataTypes.STRING(30),
