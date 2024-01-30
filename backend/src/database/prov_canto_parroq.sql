@@ -260,7 +260,7 @@ INSERT INTO `paises` VALUES(240, 'ZW', 'Zimbabue');
   CHARACTER SET utf8
   COLLATE utf8_spanish_ci;
 
-  INSERT INTO tbl_provincia VALUES 
+  INSERT INTO provinces VALUES 
     (1, 'Azuay'),
     (2, 'Bolívar'),
     (3, 'Cañar'),
@@ -287,23 +287,7 @@ INSERT INTO `paises` VALUES(240, 'ZW', 'Zimbabue');
     (24, 'Santa Elena'),
     (25, 'Zonas No Delimitadas');
 
-    SET NAMES 'utf8';
-
-CREATE TABLE tbl_canton(
-  id BIGINT(20) NOT NULL AUTO_INCREMENT,
-  canton TEXT NOT NULL,
-  id_provincia BIGINT(20) NOT NULL,
-  PRIMARY KEY (id),
-  INDEX FK_tbl_canton_tbl_provincia_id (id_provincia),
-  CONSTRAINT FK_tbl_canton_tbl_provincia_id FOREIGN KEY (id_provincia)
-  REFERENCES tbl_provincia (id) ON DELETE RESTRICT ON UPDATE RESTRICT
-)
-ENGINE = INNODB
-AUTO_INCREMENT = 1
-CHARACTER SET utf8
-COLLATE utf8_spanish_ci;
-
-INSERT INTO tbl_canton VALUES 
+INSERT INTO cantons VALUES 
   (1, 'Cuenca', 1),(2, 'Girón', 1),(3, 'Gualaceo', 1),(4, 'Nabón', 1),(5, 'Paute', 1),(6, 'Pucara', 1),(7, 'San Fernando', 1),(8, 'Santa Isabel', 1),(9, 'Sigsig', 1),(10, 'Oña', 1),(11, 'Chordeleg', 1),
   (12, 'El Pan', 1),(13, 'Sevilla de Oro', 1),(14, 'Guachapala', 1),(15, 'Camilo Ponce Enríquez', 1),(16, 'Guaranda', 2),(17, 'Chillanes', 2),(18, 'Chimbo', 2),(19, 'Echeandía', 2),(20, 'San Miguel', 2),(21, 'Caluma', 2),(22, 'Las Naves', 2),
   (23, 'Azogues', 3),(24, 'Biblián', 3),(25, 'Cañar', 3),(26, 'La Troncal', 3),(27, 'El Tambo', 3),(28, 'Déleg', 3),(29, 'Suscal', 3),(30, 'Tulcán', 4),(31, 'Bolívar', 4),(32, 'Espejo', 4),(33, 'Mira', 4),(34, 'Montúfar', 4),
@@ -388,23 +372,8 @@ INSERT INTO tbl_canton VALUES
   (223, 'Manga del Cura', 25),
   (224, 'El Piedrero', 25);
 
-  SET NAMES 'utf8';
 
-CREATE TABLE tbl_parroquia(
-  id BIGINT(20) NOT NULL AUTO_INCREMENT,
-  parroquia TEXT NOT NULL,
-  id_canton BIGINT(20) NOT NULL,
-  PRIMARY KEY (id),
-  INDEX FK_tbl_parroquia_tbl_canton_id (id_canton),
-  CONSTRAINT FK_tbl_parroquia_tbl_canton_id FOREIGN KEY (id_canton)
-  REFERENCES tbl_canton (id) ON DELETE RESTRICT ON UPDATE RESTRICT
-)
-ENGINE = INNODB
-AUTO_INCREMENT = 1
-CHARACTER SET utf8
-COLLATE utf8_spanish_ci;
-
-INSERT INTO tbl_parroquia VALUES 
+INSERT INTO parishes VALUES 
   (1, 'Bellavista', 1),
   (2, 'Cañaribamba', 1),
   (3, 'El Batán', 1),

@@ -1,4 +1,5 @@
 import { Users } from "../Models/Users.js";
+import { Professionals } from "../Models/Professionals.js";
 import bycrypt from "bcrypt";
 import { Op } from "sequelize";
 import { logger } from "../log/LogActivity.js";
@@ -47,6 +48,13 @@ export const registerUser = async (req, res) => {
 
     // rol por defecto "profesional" cuando se registre un usuario
     const rol = await UserRoles.create({ userId: newUser.userId, roleId: 2 });
+    const professional = await Professionals.create({   
+      ci,
+      firstName,
+      secondName,
+      firstLastName,
+      secondLastName,
+    });
 
     logger({
       httpMethod: req.method,

@@ -42,8 +42,13 @@ import {
   getBooksById,
 } from "../controllers/cvController.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
+// import  loggerMiddleware from "../middlewares/loggerMiddleware.js";
+
 
 const router = Router();
+// router.use(loggerMiddleware)
+
+
 router.post("/addProfessionalExperience",isAuthenticated,addProfessionalExperience);
 router.get("/getAllProfessionalExperience",isAuthenticated,getAllProfessionalExperience);
 router.put("/editProfessionalExperience/:experienceId",isAuthenticated,editProfessionalExperience);

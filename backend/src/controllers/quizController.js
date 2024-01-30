@@ -62,3 +62,25 @@ export const getAllResponses = async (req, res) => {
   const professionals = await Responses.findAll();
   res.json(professionals);
 };
+
+export const getAllQuizzes = async (req, res) => {
+  const data = await Quiz.findAll();
+  res.json(data);
+};
+
+export const addQuiz= async (req, res) => {
+  const data = req.body; // Suponiendo que los datos están en el cuerpo de la solicitud
+  try {
+    const newResponses = await Quiz.create(data);
+    res.json({ message: "Agregado con éxito" });
+    // logger({
+    //   httpMethod: req.method,
+    //   endPoint: req.originalUrl,
+    //   action: "Se agrego la encuesta",
+    // });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

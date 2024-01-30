@@ -18,6 +18,9 @@ export const Logger = sequelize.define(
     endPoint: {
       type: DataTypes.STRING(50),
     },
+    description: {
+      type: DataTypes.TEXT,
+    },
   },
   {
     timestamps: false,

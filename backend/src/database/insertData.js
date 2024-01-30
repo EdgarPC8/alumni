@@ -1,175 +1,84 @@
-import { Roles } from "../Models/Roles.js";
-import readline from "readline";
-import path from "path";
-import fs from "fs";
-import fileDirName from "../libs/file-dirname.js";
+import {
+  ProfessionalExperience,
+  Languages,
+  AcademicProfessionalMerits,
+  AcademicTraining,
+  TeachingExperience,
+  CoursesWorkshops,
+  IntellectualProduction,
+  Books,
+} from "../Models/CV.js";
+
 import { Users } from "../Models/Users.js";
-import { Professionals } from "../Models/Professionals.js";
-import { Nominas } from "../Models/Nominas.js";
-import { Questions,Options,QuestionTypes,Responses,Quiz} from "../Models/Quiz.js";
-// import { UserData } from "../Models/UserData.js";
-const { __dirname } = fileDirName(import.meta);
 import { UserRoles } from "../Models/UserRoles.js";
-import { Usuario } from "./data/cuentas.js";
-import { NominasArray } from "./data/nominas.js";
-import { QuizzesArray,QuestionTypesArray } from "./data/quizInsert.js";
+import { Logger } from "../Models/Logging.js";
+import { Nominas } from "../Models/Nominas.js";
+import { Professionals } from "../Models/Professionals.js";
+import { Roles } from "../Models/Roles.js";
+import {
+  Questions,
+  Options,
+  Responses,
+  QuestionTypes,
+  Quiz,
+} from "../Models/Quiz.js";
 
-import bycrypt from "bcrypt";
+import {
+  Country,
+  Cod_country_lenguage,
+  Province,
+  Canton,
+  Parish,
+} from "../Models/LinguisticsGeography.js";
 
-
-const insertRoles = async () => {
-  const filePath = path.resolve(__dirname, "data", "roles.csv");
-
-  const file = readline.createInterface(fs.createReadStream(filePath));
-
-  const roles = [];
-
-  file.on("line", async (rol) => {
-    roles.push({ rol });
-  });
-
-  file.on("close", async () => {
-    await Roles.bulkCreate(roles);
-  });
-};
-
-const insertDefaultUsers = async () => {
-  const cuentas = Usuario.cuentas;
-
- 
-
-  const users = await Promise.all(cuentas.map(async ([username, password, arrayRoles, { userInfo }]) => {
-    const { ci, firstName, secondName, firstLastName, secondLastName, photo } = userInfo;
-    const passgenerate = await bycrypt.hash(password, 10);
-  
-    return {
-      username,
-      password: passgenerate, // Aquí asignamos la contraseña encriptada
-      ci,
-      firstName,
-      secondName,
-      firstLastName,
-      photo,
-      secondLastName,
-    };
-  }));
-  const professionals = cuentas.map(
-    ([username, password, arrayRoles, { userInfo,professionals }]) => {
-      const {
-        ci,
-        firstName,
-        secondName,
-        firstLastName,
-        secondLastName,
-        birthDate,
-        gender,
-        direction,
-        homePhone,
-        cellPhone,
-        personalEmail,
-        institutionalEmail,
-        image
-      } = professionals;
-
-      return {
-        ci,
-        firstName,
-        secondName,
-        firstLastName,
-        secondLastName,
-        birthDate,
-        gender,
-        direction,
-        homePhone,
-        cellPhone,
-        personalEmail,
-        institutionalEmail,
-        image
-      };
-    }
-  );
-  const createdProfessionals = await Professionals.bulkCreate(professionals, { returning: true });
+// Con ESM
+import jsonData from './data/backup.json' assert { type: 'json' };
 
 
-  const rolesUser = cuentas.map(([username, password, roles]) => {
-    return roles;
-  });
-
-  const quizzes = QuizzesArray.map(
-    ({idQuiz,title,description,date}) => {
-      return {idQuiz,title,description,date};
-    }
-  );
-
-  //Creacion de inserts
-  const createdUsers = await Users.bulkCreate(users, { returning: true });
- // Suponiendo que tienes un modelo Responses y Sequelize como ORM
-
-const arrayPreguntasCerradas = [1, 3, 8];
-const arrayPreguntasCerradasRespuestas = ["Si", "No"];
-const responses=[]
-const arrayCarreras=[
-  "TECNOLOGIA SUPERIOR EN ADMINISTRACION",
-  "TECNOLOGIA SUPERIOR EN DESARROLLO DE SOFTWARE",
-  "TECNOLOGIA SUPERIOR EN ELECTRICIDAD",
-  "TECNOLOGIA SUPERIOR EN MECANICA AUTOMOTRIZ",
-    ]
-
-for (let index = 1; index < 103; index++) {
-  const respuestaAleatoriaCarrera =
-      arrayCarreras[
-        Math.floor(Math.random() * arrayCarreras.length)
-      ];
-  responses.push({
-    idQuiz: 1,
-    idQuestion: 2,
-    userId: index,
-    textResponse: respuestaAleatoriaCarrera,
-    idOption: null,
-  });
-
-  for (let i = 0; i < arrayPreguntasCerradas.length; i++) {
-    const preguntaId = arrayPreguntasCerradas[i];
-    const respuestaAleatoria =
-      arrayPreguntasCerradasRespuestas[
-        Math.floor(Math.random() * arrayPreguntasCerradasRespuestas.length)
-      ];
-
-
-      responses.push({
-        idQuiz: 1,
-        idQuestion: preguntaId,
-        userId: index,
-        textResponse: respuestaAleatoria,
-        idOption: null,
-      });
-    
-  }
-}
-
-await QuestionTypes.bulkCreate(QuestionTypesArray, { returning: true });
-await Quiz.bulkCreate(quizzes, { returning: true });
-await Questions.bulkCreate(QuizzesArray[0]["questions"], { returning: true });
-await Options.bulkCreate(QuizzesArray[0]["options"], { returning: true });
-await Responses.bulkCreate(responses, { returning: true });
-await Nominas.bulkCreate(NominasArray, { returning: true });
-
-  const bulkUserRoles = createdUsers
-    .map((user, index) => {
-      return rolesUser[index].map((roleId) => {
-        return { userId: user.userId, roleId };
-      });
-    })
-    .flat();
-  await UserRoles.bulkCreate(bulkUserRoles);
-};
-
-
+// Función para insertar roles y usuarios
 const insertData = async () => {
-  await insertRoles();
-  setTimeout(async () => {
-    await insertDefaultUsers();
-  }, 2000);
+  try {
+    // console.log("-----------------------------------------------------------------------")
+    // console.log(jsonData.UsersBackup)
+
+    await Roles.bulkCreate(jsonData.RolesBackup, { returning: true });
+     await Users.bulkCreate(jsonData.UsersBackup, { returning: true });
+     await UserRoles.bulkCreate(jsonData.UserRolesBackup, { returning: true });
+     await Professionals.bulkCreate(jsonData.ProfessionalsBackup, { returning: true });
+
+   await Quiz.bulkCreate(jsonData.QuizBackup, { returning: true });
+   await QuestionTypes.bulkCreate(jsonData.QuestionTypesBackup, { returning: true });
+   await Questions.bulkCreate(jsonData.QuestionsBackup, { returning: true });
+   await Options.bulkCreate(jsonData.OptionsBackup, { returning: true });
+   await Responses.bulkCreate(jsonData.ResponsesBackup, { returning: true });
+
+   await Nominas.bulkCreate(jsonData.NominasBackup, { returning: true });
+   await Logger.bulkCreate(jsonData.LoggerBackup, { returning: true });
+
+
+   await ProfessionalExperience.bulkCreate(jsonData.ProfessionalExperienceBackup, { returning: true });
+   await Languages.bulkCreate(jsonData.LanguagesBackup, { returning: true });
+   await AcademicProfessionalMerits.bulkCreate(jsonData.AcademicProfessionalMeritsBackup, { returning: true });
+   await AcademicTraining.bulkCreate(jsonData.AcademicTrainingBackup, { returning: true });
+   await TeachingExperience.bulkCreate(jsonData.TeachingExperienceBackup, { returning: true });
+   await CoursesWorkshops.bulkCreate(jsonData.CoursesWorkshopsBackup, { returning: true });
+   await IntellectualProduction.bulkCreate(jsonData.IntellectualProductionBackup, { returning: true });
+   await Books.bulkCreate(jsonData.BooksBackup, { returning: true });
+
+  
+  //  await Country.bulkCreate(jsonData.CountryBackup, { returning: true });
+   await Cod_country_lenguage.bulkCreate(jsonData.Cod_country_lenguageBackup, { returning: true });
+   await Province.bulkCreate(jsonData.ProvinceBackup, { returning: true });
+   await Canton.bulkCreate(jsonData.CantonBackup, { returning: true });
+   await Parish.bulkCreate(jsonData.ParishBackup, { returning: true });
+
+  } catch (error) {
+    console.error("Error al insertar datos:", error);
+  }
 };
+
+// Ejecuta la función para insertar datos
+// insertData();
+
 
 export { insertData };
