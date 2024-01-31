@@ -34,6 +34,10 @@ import {
   Parish,
 } from "../Models/LinguisticsGeography.js";
 
+import {
+  Matriz,
+} from "../Models/Matriz.js";
+
 export const backup = async (req, res) => {
   try {
     const backupFileName = `backup_${Date.now()}.json`;
@@ -63,6 +67,7 @@ export const backup = async (req, res) => {
     const ProvinceBackup = await Province.findAll();
     const CantonBackup = await Canton.findAll();
     const ParishBackup = await Parish.findAll();
+    const MatrizBackup = await Matriz.findAll();
 
     // Crear un objeto que contenga todos los datos
     const backupData = {
@@ -90,6 +95,7 @@ export const backup = async (req, res) => {
         ProvinceBackup,
         CantonBackup,
         ParishBackup,
+        MatrizBackup,
     };
 
     // Convertir a formato JSON y guardar en un archivo

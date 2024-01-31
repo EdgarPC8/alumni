@@ -24,6 +24,10 @@ import {
 } from "../Models/Quiz.js";
 
 import {
+  Matriz,
+} from "../Models/Matriz.js";
+
+import {
   Country,
   Cod_country_lenguage,
   Province,
@@ -71,6 +75,7 @@ const insertData = async () => {
    await Province.bulkCreate(jsonData.ProvinceBackup, { returning: true });
    await Canton.bulkCreate(jsonData.CantonBackup, { returning: true });
    await Parish.bulkCreate(jsonData.ParishBackup, { returning: true });
+   await Matriz.bulkCreate(jsonData.MatrizBackup, { returning: true });
 
   } catch (error) {
     console.error("Error al insertar datos:", error);
