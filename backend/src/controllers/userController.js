@@ -2,7 +2,6 @@ import { Roles } from "../Models/Roles.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { logger } from "../log/LogActivity.js";
 import { UserRoles } from "../Models/UserRoles.js";
 
 const addUser = async (req, res) => {
@@ -39,15 +38,9 @@ const addUser = async (req, res) => {
       return { userId: newUser.userId, roleId };
     });
 
-    console.log(userRoles);
+    // console.log(userRoles);
 
     await UserRoles.bulkCreate(userRoles);
-
-    logger({
-      httpMethod: req.method,
-      action: `Se agrego un nuevo usuario: ${newUser.username} ${newUser.ci}`,
-      endPoint: req.originalUrl,
-    });
   } catch (error) {
     // manejo de errores si ocurre algún problema durante la creación del usuario
     console.error("error al crear el usuario:", error);
@@ -129,7 +122,7 @@ const updateUserData = async (req, res) => {
     roles,
   } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   try {
     const userUpdate = await Users.update(
@@ -184,12 +177,6 @@ const updateUserData = async (req, res) => {
       }
     }
 
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: `Usuario editado: ${ci} ${firstName}`,
-    });
-
     res.json({ message: "usuario editado con éxito" });
   } catch (error) {
     res.status(500).json({
@@ -218,12 +205,6 @@ const updateUserProfile = async (req, res) => {
         },
       }
     );
-
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: `Usuario editado: ${ci} ${firstName}`,
-    });
 
     res.json({ message: "usuario editado con éxito" });
   } catch (error) {
@@ -258,11 +239,6 @@ const changePassword = async (req, res) => {
       { where: { userId: req.params.userId } }
     );
     res.json({ message: "Contraseña actualizada con éxito" });
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: "Contraseña cambiada",
-    });
   } catch (e) {
     return res.status(400).json({
       error: "Bad Request",
@@ -274,7 +250,7 @@ const changePassword = async (req, res) => {
 const getUsers = async (req, res) => {
   const token = req.headers["authorization"].split(" ")[1];
   const decoded = jwt.verify(token, "privateKey");
-  console.log(decoded);
+  // console.log(decoded);
 
   try {
     const users = await Users.findAll({
@@ -306,11 +282,6 @@ const deleteUser = async (req, res) => {
     });
 
     res.json({ message: "Usuario eleminado con éxito" });
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: "Usuario eliminado",
-    });
   } catch (error) {
     return res.status(500).json({
       message: error.message,

@@ -12,11 +12,11 @@ export const addResponses = async (req, res) => {
   try {
     const newResponses = await Responses.create(data);
     res.json({ message: "Agregado con éxito" });
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: "Se respondió la encuesta",
-    });
+    // logger({
+    //   httpMethod: req.method,
+    //   endPoint: req.originalUrl,
+    //   action: "Se respondió la encuesta",
+    // });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -32,11 +32,11 @@ export const editResponses = async (req, res) => {
       data.where // Aquí estableces la condición para la actualización
     );
     res.json({ message: "Editado con éxito" });
-    logger({
-      httpMethod: req.method,
-      endPoint: req.originalUrl,
-      action: "Se editó la encuesta",
-    });
+    // logger({
+    //   httpMethod: req.method,
+    //   endPoint: req.originalUrl,
+    //   action: "Se editó la encuesta",
+    // });
   } catch (error) {
     res.status(500).json({
       message: error.message,

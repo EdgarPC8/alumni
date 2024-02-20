@@ -20,7 +20,7 @@ export const Professionals = sequelize.define(
       autoIncrement: true,
     },
     ci: {
-      type: DataTypes.BIGINT(11),
+      type: DataTypes.BIGINT(20),
       allowNull: false, // No permite valores nulos
       unique: true, // Hace que el campo sea único
     },

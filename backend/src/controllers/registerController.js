@@ -16,6 +16,8 @@ export const registerUser = async (req, res) => {
       secondLastName,
       password,
     } = req.body;
+    const system=req.headers['user-agent'];
+
 
     // Verificar si el nombre de usuario o CI ya existe
     const existingUser = await Users.findOne({
@@ -59,7 +61,9 @@ export const registerUser = async (req, res) => {
     logger({
       httpMethod: req.method,
       endPoint: req.originalUrl,
-      action: "Usuario registrado",
+      action: "Se a Registrado",
+      description: `EL Profesional ${firstName} ${secondName} ${firstLastName} ${secondLastName} con CI: ${ci}`,
+      system:system
     });
 
     res.json({

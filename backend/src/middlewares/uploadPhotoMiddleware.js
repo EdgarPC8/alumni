@@ -38,8 +38,8 @@ const diskStorageToUpdatePhoto = multer.diskStorage({
     }
 
     unlink(join(__dirname, `../../userPhotos/${photoToDelete}`));
-  console.log("hola------------------------------------------------------------")
-  console.log(req.params.userId)
+  // console.log("hola------------------------------------------------------------")
+  // console.log(req.params.userId)
 
     const updatePhotoUser = await Users.update(
       { photo: newPhoto },

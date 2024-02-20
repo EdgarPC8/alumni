@@ -2,20 +2,20 @@
 import { sequelize } from "../database/connection.js";
 import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
-import { createAccessToken, verifyJWT } from "../libs/jwt.js";
+import { createAccessToken, getHeaderToken, verifyJWT } from "../libs/jwt.js";
 import jwt from "jsonwebtoken";
 import { Roles } from "../Models/Roles.js";
 import { UserRoles } from "../Models/UserRoles.js";
+import { logger } from "../log/LogActivity.js";
+
 
 // Llamar a la función para agregar un usuario
 // agregarUsuario("admin", "contraseña", 1);
 
 const login = async (req, res) => {
   const { username, password, rol } = req.body;
+  const system=req.headers['user-agent'];
 
-  //Verificar si existe
-
-  // console.log(user);
   try {
     const user = await Users.findOne({
       where: { username },
@@ -24,7 +24,7 @@ const login = async (req, res) => {
         where: { rol },
       },
     });
-    console.log(user);
+    // console.log(user);
 
     const roles = await Users.findOne({
       where: { userId: user.userId },
@@ -59,6 +59,16 @@ const login = async (req, res) => {
     //Crear token JWT
     const token = await createAccessToken({ payload });
 
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: "Se a Logeado",
+      description: `EL ${rol} ${user.firstName} ${user.secondName} ${user.firstLastName} ${user.secondLastName} con CI: ${user.ci}`,
+      system:system
+    });
+
+
+
     res.json({ message: "User auth", token });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -67,7 +77,8 @@ const login = async (req, res) => {
 };
 
 const verifytoken = async (req, res) => {
-  const token = req.headers["authorization"].split(" ")[1];
+  const token = getHeaderToken(req);
+
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {

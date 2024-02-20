@@ -36,6 +36,8 @@ import {
 
 import {
   Matriz,
+  Carreers,
+  Periods,
 } from "../Models/Matriz.js";
 
 export const backup = async (req, res) => {
@@ -68,6 +70,8 @@ export const backup = async (req, res) => {
     const CantonBackup = await Canton.findAll();
     const ParishBackup = await Parish.findAll();
     const MatrizBackup = await Matriz.findAll();
+    const CarreersBackup = await Carreers.findAll();
+    const PeriodsBackup = await Periods.findAll();
 
     // Crear un objeto que contenga todos los datos
     const backupData = {
@@ -96,6 +100,8 @@ export const backup = async (req, res) => {
         CantonBackup,
         ParishBackup,
         MatrizBackup,
+        CarreersBackup,
+        PeriodsBackup,
     };
 
     // Convertir a formato JSON y guardar en un archivo
