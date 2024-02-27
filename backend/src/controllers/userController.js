@@ -3,9 +3,13 @@ import { Users } from "../Models/Users.js";
 import bycrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserRoles } from "../Models/UserRoles.js";
+import { Op } from "sequelize";
+import { Professionals } from "../Models/Professionals.js";
+
 
 const addUser = async (req, res) => {
   try {
+   
     const {
       ci,
       username,
@@ -16,6 +20,20 @@ const addUser = async (req, res) => {
       password,
       roles,
     } = req.body;
+
+     // Verificar si el nombre de usuario o CI ya existe
+     const existingUser = await Users.findOne({
+      where: {
+        [Op.or]: [
+          { username },
+          { ci },
+        ],
+      },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: `CI: ${ci} ya registrado` });
+    }
 
     const passgenerate = await bycrypt.hash(password, 10);
 
@@ -32,7 +50,7 @@ const addUser = async (req, res) => {
       photo,
     });
 
-    res.json({ message: "usuario agregado con éxito" });
+    res.json({ message: `${firstName} ${firstLastName} agregado con éxito`,user:newUser});
 
     const userRoles = roles.map((roleId) => {
       return { userId: newUser.userId, roleId };

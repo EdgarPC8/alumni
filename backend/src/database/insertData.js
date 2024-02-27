@@ -27,6 +27,7 @@ import {
   Matriz,
   Carreers,
   Periods,
+  MatrizQuiz,
 } from "../Models/Matriz.js";
 
 import {
@@ -36,6 +37,9 @@ import {
   Canton,
   Parish,
 } from "../Models/LinguisticsGeography.js";
+import {
+  Tutorials,
+} from "../Models/Tutorials.js";
 
 import jsonData from './data/backup.json' assert { type: 'json' };
 
@@ -153,6 +157,8 @@ const insertData = async () => {
     await Periods.bulkCreate(jsonData.PeriodsBackup, { returning: true });
     await Carreers.bulkCreate(jsonData.CarreersBackup, { returning: true });
     await Matriz.bulkCreate(jsonData.MatrizBackup, { returning: true });
+    await MatrizQuiz.bulkCreate(jsonData.MatrizQuizBackup, { returning: true });
+    await Tutorials.bulkCreate(jsonData.TutorialsBackup, { returning: true });
 
   } catch (error) {
     console.error("Error al insertar datos:", error);

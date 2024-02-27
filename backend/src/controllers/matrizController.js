@@ -37,9 +37,9 @@ export const getAllMatriz = async (req, res) => {
     const matriz = await Matriz.findAll({
       attributes: ['id','grateDate', 'modality'],
       include: [
-        { model: Professionals, attributes: ['firstName', 'secondName', 'firstLastName', 'secondLastName','ci'] },
-        { model: Carreers, attributes: ['name'] },
-        { model: Periods, attributes: ['name'] },
+        { model: Professionals, attributes: ['firstName', 'secondName', 'firstLastName', 'secondLastName','ci','id'] },
+        { model: Carreers},
+        { model: Periods},
       ],
     });
 
