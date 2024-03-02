@@ -2716,6 +2716,17 @@
       "firstLastName": "Vega",
       "secondLastName": "Romero",
       "photo": null
+    },
+    {
+      "userId": 242,
+      "username": "1102798012",
+      "password": "$2b$10$UDnP2KCRW2m4ZulGgeo...1X06698ob7mPCUE5rqYXDfVLWv4F2Re",
+      "ci": 1102798012,
+      "firstName": "Mónica ",
+      "secondName": "Mireya",
+      "firstLastName": "Cueva",
+      "secondLastName": "Mendoza",
+      "photo": null
     }
   ],
   "UserRolesBackup": [
@@ -10965,6 +10976,28 @@
       "institutionalEmail": null,
       "image": null,
       "userId": 241
+    },
+    {
+      "id": 242,
+      "ci": 1102798012,
+      "firstName": "Mónica ",
+      "secondName": "Mireya",
+      "firstLastName": "Cueva",
+      "secondLastName": "Mendoza",
+      "bloodType": null,
+      "birthDate": null,
+      "gender": null,
+      "civilStatus": null,
+      "nationality": null,
+      "placeBirth": null,
+      "placeResidence": null,
+      "direction": null,
+      "homePhone": null,
+      "cellPhone": null,
+      "personalEmail": null,
+      "institutionalEmail": null,
+      "image": null,
+      "userId": null
     }
   ],
   "RolesBackup": [

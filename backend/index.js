@@ -46,11 +46,9 @@ const corsOptions = {
   credentials: true, // Permite el envío de cookies y encabezados de autenticación
 };
 app.use(loggerMiddleware);
-
-
 app.use(cors(corsOptions));
-
 app.use(express.json());
+
 // app.use((req, res, next) => {
 //   loggerMiddleware(req, res, () => next());
 // });
