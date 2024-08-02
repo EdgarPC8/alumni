@@ -20,7 +20,7 @@ export const Professionals = sequelize.define(
       autoIncrement: true,
     },
     ci: {
-      type: DataTypes.BIGINT(20),
+      type: DataTypes.STRING(20),
       allowNull: false, // No permite valores nulos
       unique: true, // Hace que el campo sea único
     },
@@ -88,6 +88,10 @@ export const Professionals = sequelize.define(
       type: DataTypes.STRING(60),
       defaultValue: null,
     },
+    aboutMe: {
+      type: DataTypes.TEXT("medium"),
+      defaultValue: null,
+    },
     image: {
       type: DataTypes.TEXT,
       defaultValue: null,
@@ -95,7 +99,7 @@ export const Professionals = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 Professionals.hasMany(AcademicTraining, {

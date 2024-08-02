@@ -12,9 +12,8 @@ import userRoutes from "./src/routes/userRoutes.js";
 import registerRoutes from "./src/routes/registerRoutes.js";
 import logRoutes from "./src/routes/logRoutes.js";
 import { sequelize } from "./src/database/connection.js";
-import { insertData,consoleData } from "./src/database/insertData.js";
-import  loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
-
+import { insertData, consoleData } from "./src/database/insertData.js";
+import loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
 
 const app = express();
 const PORT = 3000;
@@ -25,14 +24,14 @@ const allowedOrigins = [
   // "http://dev.gym.com",
   "http://localhost",
   "http://dev.alum.com",
-  "http://localhost:8888",
+  // "http://localhost:8888",
   "http://localhost:5173",
-"http://localhost:3000",
   "http://192.168.137.250:5173",
   // "http://192.169.100.250:5173",
   // "http://192.168.137.250:8888",
   "http://181.39.125.155",
   "http://aplicaciones.marianosamaniego.edu.ec",
+  "http://www.aplicaciones.marianosamaniego.edu.ec",
 ];
 
 const corsOptions = {
@@ -49,14 +48,12 @@ const corsOptions = {
 };
 app.use(loggerMiddleware);
 
-
 app.use(cors(corsOptions));
 
 app.use(express.json());
 // app.use((req, res, next) => {
 //   loggerMiddleware(req, res, () => next());
 // });
-
 
 app.use("/photos", express.static("userPhotos"));
 app.use("/api/auth", authRoutes);
@@ -71,13 +68,12 @@ app.use("/api/logs", logRoutes);
 app.use("/api/config", configRoutes);
 app.use("/api/matriz", matrizRoutes);
 
-
 async function main() {
   try {
     await sequelize.authenticate();
 
-    // await sequelize.sync({ force: true });
-    // await insertData();
+    await sequelize.sync({ force: true });
+    await insertData();
     // await consoleData();
 
     console.log("Conección realizada con éxito.");
