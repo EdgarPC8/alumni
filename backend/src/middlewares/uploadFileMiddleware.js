@@ -1,9 +1,6 @@
 import multer from "multer";
-import { join, extname } from "path";
+import { join } from "path";
 import fileDirName from "../libs/file-dirname.js";
-import { unlink } from "fs/promises";
-import { Users } from "../Models/Users.js";
-import { Professionals } from "../Models/Professionals.js";
 
 const { __dirname } = fileDirName(import.meta);
 
@@ -26,7 +23,8 @@ const diskStorageToUpdateCSV = multer.diskStorage({
 });
 
 const uploadCSV = multer({ storage: diskStorageForCSV }).single("csvFile");
-const uploadUpdateCSV = multer({ storage: diskStorageToUpdateCSV }).single("csvFile");
+const uploadUpdateCSV = multer({ storage: diskStorageToUpdateCSV }).single(
+  "csvFile",
+);
 
 export { uploadCSV, uploadUpdateCSV };
-

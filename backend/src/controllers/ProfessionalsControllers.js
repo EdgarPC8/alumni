@@ -25,20 +25,20 @@ const addProfessional = async (req, res) => {
 
 const editProfessional = async (req, res) => {
   const data = req.body;
-  const profesional=req.params;
+  const profesional = req.params;
   try {
-    const editProfessional = await Professionals.update(data, {
+    await Professionals.update(data, {
       where: {
         id: profesional.professionalId,
       },
     });
     res.json({ message: "Profesional Editado con éxito" });
-  //   logger({
-  //     httpMethod: req.method,
-  //     endPoint: req.originalUrl,
-  //     action: "Se editó un profesional",
-  //     description:`El Usuario ah Editado al Profesional ${data.firstName} ${data.firstLastName}`
-  // })
+    //   logger({
+    //     httpMethod: req.method,
+    //     endPoint: req.originalUrl,
+    //     action: "Se editó un profesional",
+    //     description:`El Usuario ah Editado al Profesional ${data.firstName} ${data.firstLastName}`
+    // })
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -61,9 +61,26 @@ const getProfessionalsById = async (req, res) => {
   }
 };
 
+const deleteProfessionals = async (req, res) => {
+  try {
+    const removingUser = await Professionals.destroy({
+      where: {
+        id: req.params.userId,
+      },
+    });
+
+    res.json({ message: "Profesional eleminado con éxito" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export {
   getAllProfessionals,
   addProfessional,
   editProfessional,
   getProfessionalsById,
+  deleteProfessionals,
 };

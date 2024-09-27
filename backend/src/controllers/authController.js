@@ -75,6 +75,33 @@ const login = async (req, res) => {
     console.log(error);
   }
 };
+const loginExternal = async (req, res) => {
+  const { username, loginRol, userId } = req.body;
+  const system=req.headers['user-agent'];
+  try {
+
+    const payload =req.body;
+
+    //Crear token JWT
+    const token = await createAccessToken({ payload });
+    const user = req.body.urlWebSession
+    const rol = req.body.loginRol
+
+    logger({
+      httpMethod: req.method,
+      endPoint: req.originalUrl,
+      action: `Se a Logeado desde la pagina ${user.urlWeb}`,
+      description: `EL ${rol} ${user.firstName} ${user.secondName} ${user.firstLastName} ${user.secondLastName} con CI: ${user.ci}`,
+      system:system
+    });
+
+    res.json({ message: "User auth", token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+};
+
 
 const verifytoken = async (req, res) => {
   const token = getHeaderToken(req);
@@ -90,4 +117,4 @@ const verifytoken = async (req, res) => {
   }
 };
 
-export { login, verifytoken };
+export { login, verifytoken,loginExternal };

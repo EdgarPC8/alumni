@@ -1,52 +1,52 @@
-import {
-  Matriz,
-  Carreers,
-  Periods,
-  MatrizQuiz,
-} from "../Models/Matriz.js";
+import { Matricula } from "../Models/Matricula.js";
+import { Matriz, Carreers, Periods, MatrizQuiz } from "../Models/Matriz.js";
 
-import {
-  Professionals,
-} from "../Models/Professionals.js";
-import {
-  Questions,
-  Options,
-  Responses,
-  QuestionTypes,
-  Quiz,
-} from "../Models/Quiz.js";
+import { Professionals } from "../Models/Professionals.js";
+import { Quiz } from "../Models/Quiz.js";
 
 export const getQuizByMatrizProfessional = async (req, res) => {
   try {
     const matriz = await Matriz.findOne({
-      attributes: ['ci'],
-      where: { idProfessional:req.params.idProfessional },
-      include: [
-        { model: Quiz, attributes: ['title','description','date'] },
-      ],
+      attributes: ["ci"],
+      where: { idProfessional: req.params.idProfessional },
+      include: [{ model: Quiz, attributes: ["title", "description", "date"] }],
     });
     res.json(matriz);
   } catch (error) {
-    console.error('Error al obtener datos de la matriz:', error);
-    res.status(500).json({ error: 'Hubo un problema al obtener los datos de la matriz.' });
+    console.error("Error al obtener datos de la matriz:", error);
+    res
+      .status(500)
+      .json({ error: "Hubo un problema al obtener los datos de la matriz." });
   }
 };
 
 export const getAllMatriz = async (req, res) => {
   try {
     const matriz = await Matriz.findAll({
-      attributes: ['id','grateDate', 'modality'],
+      attributes: ["id", "grateDate", "modality"],
       include: [
-        { model: Professionals, attributes: ['firstName', 'secondName', 'firstLastName', 'secondLastName','ci','id'] },
-        { model: Carreers},
-        { model: Periods},
+        {
+          model: Professionals,
+          attributes: [
+            "firstName",
+            "secondName",
+            "firstLastName",
+            "secondLastName",
+            "ci",
+            "id",
+          ],
+        },
+        { model: Carreers },
+        { model: Periods },
       ],
     });
 
     res.json(matriz);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Hubo un problema al obtener los datos de la matriz.' });
+    res
+      .status(500)
+      .json({ error: "Hubo un problema al obtener los datos de la matriz." });
   }
 };
 export const getAllCareers = async (req, res) => {
@@ -110,7 +110,6 @@ export const deleteMatriz = async (req, res) => {
       },
     });
     res.json({ message: "Eliminado con éxito" });
-
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -119,7 +118,7 @@ export const deleteMatriz = async (req, res) => {
 };
 export const editCareer = async (req, res) => {
   const data = req.body;
-  const carrer=req.params;
+  const carrer = req.params;
   try {
     const editProfessional = await Carreers.update(data, {
       where: {
@@ -135,7 +134,7 @@ export const editCareer = async (req, res) => {
 };
 export const editPeriod = async (req, res) => {
   const data = req.body;
-  const carrer=req.params;
+  const carrer = req.params;
   try {
     const editProfessional = await Periods.update(data, {
       where: {
@@ -149,18 +148,26 @@ export const editPeriod = async (req, res) => {
     });
   }
 };
-export const getMatrizFilter= async (req, res) => {
-  const data = req.body; 
+export const getMatrizFilter = async (req, res) => {
+  const data = req.body;
   try {
-    const professional = await Matriz.findAll(
-      {
-        attributes: ['id','grateDate', 'modality'],
+    const professional = await Matriz.findAll({
+      attributes: ["id", "grateDate", "modality"],
       include: [
-        { model: Professionals, attributes: ['firstName', 'secondName', 'firstLastName', 'secondLastName','ci'] },
-        { model: Carreers, attributes: ['name'] },
-        { model: Periods, attributes: ['name'] },
+        {
+          model: Professionals,
+          attributes: [
+            "firstName",
+            "secondName",
+            "firstLastName",
+            "secondLastName",
+            "ci",
+          ],
+        },
+        { model: Carreers, attributes: ["name"] },
+        { model: Periods, attributes: ["name"] },
       ],
-        
+
       where: data,
     });
     res.json(professional);
@@ -170,24 +177,35 @@ export const getMatrizFilter= async (req, res) => {
     });
   }
 };
-export const getMatrizQuizFilter= async (req, res) => {
-  const data = req.body; 
+export const getMatrizQuizFilter = async (req, res) => {
+  const data = req.body;
   let professional;
-  
 
   try {
-    if(req.params.quizId!=0){
-    professional = await MatrizQuiz.findAll({
-      where:{
-      quizId: req.params.quizId,
-    }});
-    }else{
-    professional = await Quiz.findAll({
-      include: [
-        { model: Matriz},
-      ],
-    });
+    if (req.params.quizId != 0) {
+      // professional = await MatrizQuiz.findAll({
+      //   where: {
+      //     quizId: req.params.quizId,
+      //   },
+      // });
+      professional = await Quiz.findAll({
+        include: [
+          { model: Matriz},
+          { model: Matricula}
+        ],
+        where: {
+          idQuiz: req.params.quizId,
+        },
+      });
 
+      
+    } else {
+      professional = await Quiz.findAll({
+        include: [
+          { model: Matriz},
+          { model: Matricula}
+        ],
+      });
     }
     res.json(professional);
   } catch (error) {
@@ -196,6 +214,47 @@ export const getMatrizQuizFilter= async (req, res) => {
     });
   }
 };
+// export const getMatrizQuizFilter = async (req, res) => {
+//   const data = req.body;
+//   let professional;
+
+//   try {
+//     if (req.params.quizId != 0) {
+
+      
+
+//       professional = await MatrizQuiz.findAll({
+//         where: {
+//           quizId: req.params.quizId,
+//         },
+//       });
+//     } else {
+//       const quizzes = await Quiz.findAll({
+//         include: [{ model: Matriz }, { model: Matricula }],
+//       });
+
+//       // Mapea los resultados para devolver solo las longitudes de los arrays
+//       professional = quizzes.map((quiz) => ({
+//         id: quiz.id,
+//         title: quiz.title,
+//         description: quiz.description,
+//         date: quiz.date,
+//         MatrizLength: quiz.dataValues.matrices.length,
+//         MatriculaLength: quiz.dataValues.matriculas.length,
+//       }));
+//       // console.log("---------------------------------------------------------------------------");
+//       // console.log(quizzes[1].dataValues.matrices.length);
+//     }
+ 
+//     res.json(professional);
+
+//   } catch (error) {
+//     res.status(500).json({
+//       message: error.message,
+//     });
+//   }
+// };
+
 export const deleteMatrizQuiz = async (req, res) => {
   try {
     const removingUser = await MatrizQuiz.destroy({
@@ -215,9 +274,12 @@ export const deleteMatrizQuiz = async (req, res) => {
 export const completedQuiz = async (req, res) => {
   const data = req.body;
   try {
-    const editProfessional = await MatrizQuiz.update({completed:1}, {
-      where: data
-    });
+    const editProfessional = await MatrizQuiz.update(
+      { completed: 1 },
+      {
+        where: data,
+      },
+    );
     res.json({ message: "Encuesta completada con éxito" });
     // res.json({ message: data});
   } catch (error) {
@@ -226,8 +288,3 @@ export const completedQuiz = async (req, res) => {
     });
   }
 };
-
-
-
- 
-

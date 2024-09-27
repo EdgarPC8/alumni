@@ -13,13 +13,13 @@ export const Logger = sequelize.define(
       autoIncrement: true,
     },
     httpMethod: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.TEXT,
     },
     action: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.TEXT,
     },
     endPoint: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.TEXT,
     },
     description: {
       type: DataTypes.TEXT,

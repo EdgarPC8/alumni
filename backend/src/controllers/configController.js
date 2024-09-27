@@ -20,6 +20,7 @@ import { Logger } from "../Models/Logging.js";
 import { Nominas } from "../Models/Nominas.js";
 import { Professionals } from "../Models/Professionals.js";
 import { Roles } from "../Models/Roles.js";
+import { Students } from "../Models/Students.js";
 import {
   Questions,
   Options,
@@ -46,6 +47,12 @@ import {
 import {
   Tutorials,
 } from "../Models/Tutorials.js";
+import { Matricula,AcademicPeriods } from "../Models/Matricula.js";
+import { StudenstQuiz } from "../Models/StudentsQuiz.js";
+
+
+
+
 
 export const backup = async (req, res) => {
   try {
@@ -82,6 +89,10 @@ export const backup = async (req, res) => {
     const PeriodsBackup = await Periods.findAll();
     const MatrizQuizBackup = await MatrizQuiz.findAll();
     const TutorialsBackup = await Tutorials.findAll();
+    const StudentsBackup = await Students.findAll();
+    const AcademicPeriodsBackup = await AcademicPeriods.findAll();
+    const MatriculaBackup = await Matricula.findAll();
+    const StudenstQuizBackup = await StudenstQuiz.findAll();
 
     // Crear un objeto que contenga todos los datos
     const backupData = {
@@ -114,6 +125,10 @@ export const backup = async (req, res) => {
         PeriodsBackup,
         MatrizQuizBackup,
         TutorialsBackup,
+        StudentsBackup,
+        AcademicPeriodsBackup,
+        MatriculaBackup,
+        StudenstQuizBackup
     };
 
     // Convertir a formato JSON y guardar en un archivo

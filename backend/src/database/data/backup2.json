@@ -1,0 +1,75 @@
+{
+  "idQuiz": "3",
+  "title": "Encuesta para Aportes de Alumnos al PEDI",
+  "answers": [
+    {
+       "question":"¿Cómo calificarías la calidad de la enseñanza en tu carrera? (1=Muy Mala, 5=Excelente)",
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Consideras que los contenidos de las asignaturas son relevantes y actualizados? (1=Muy en desacuerdo, 5=Muy de acuerdo)",
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Consideras que los contenidos y la metodologia de las asignaturas son adecuadas? (1=Muy en desacuerdo, 5=Muy de acuerdo)",
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Has tenido oportunidades suficientes para realizar prácticas profesionales? (1 = Muy pocas, 5 = Muchas)",
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Cómo calificarías la calidad de las prácticas profesionales ofrecidas? (1 = Muy mala, 5 = Excelente)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Consideras que las aportunidades de practicas profesionales son suficientes? (1 = Muy en desacuerdo, 5 = Muy de acuerdo)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Consideras que la institución cuenta con los recursos necesarios (biblioteca, laboratorios, tecnología) para tu formación? (1 = Muy en desacuerdo, 5 = Muy de acuerdo)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Crees que la disponibilidad de recursos educativos es adecuada? (1 = Muy en desacuerdo, 5 = Muy de acuerdo)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Qué tan satisfecho estás con tu experiencia educativa en la institución? (1 = Muy insatisfecho, 5 = Muy satisfecho)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Consideras que la institucion mejora continuamente la calidad educativa? (1 = Muy insatisfecho, 5 = Muy satisfecho)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Recomendarias la institucion a futuros estudiantes? (1 = Muy en desacuerdo, 5 = Muy de acuerdo)",
+      
+      "answer": "1",
+      "type": "radio"
+    },
+    {
+       "question":"¿Como calificarias la comunicación entre los estudiantes y la institución? (1 = Muy Mala, 5 = Excelente)",
+      
+      "answer": "1",
+      "type": "radio"
+    }
+  ]
+}
+

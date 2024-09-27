@@ -24,7 +24,7 @@ const Questions = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 const Options = sequelize.define(
   "options",
@@ -45,7 +45,7 @@ const Options = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 // -- tabla respuestas
 const Responses = sequelize.define(
@@ -80,7 +80,7 @@ const Responses = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 // tipo de preguntas
 const QuestionTypes = sequelize.define(
@@ -98,7 +98,7 @@ const QuestionTypes = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 // -- Encuesta
@@ -122,10 +122,14 @@ const Quiz = sequelize.define(
       type: DataTypes.DATEONLY,
       defaultValue: null,
     },
+    document: {
+      type: DataTypes.JSON,
+      defaultValue: null,
+    },
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 // Definición de relaciones entre modelos
