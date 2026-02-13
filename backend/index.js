@@ -1,90 +1,131 @@
 import express from "express";
-import authRoutes from "./src/routes/authRoutes.js";
-import professionalsRoutes from "./src/routes/professionalsRoutes.js";
-import cvRoutes from "./src/routes/cvRoutes.js";
-import configRoutes from "./src/routes/configRoutes.js";
-import quizRoutes from "./src/routes/quizRoutes.js";
-import matrizRoutes from "./src/routes/matrizRoutes.js";
-import chartsRoutes from "./src/routes/chartsRoutes.js";
-import linguiGeoRoutes from "./src/routes/linguisticsGeographyRoutes.js";
 import cors from "cors";
-import userRoutes from "./src/routes/userRoutes.js";
-import registerRoutes from "./src/routes/registerRoutes.js";
-import logRoutes from "./src/routes/logRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
 import { sequelize } from "./src/database/connection.js";
-import { insertData, consoleData } from "./src/database/insertData.js";
-import loggerMiddleware from "./src/middlewares/loggerMiddleware.js";
-import { StudenstQuiz } from "./src/Models/StudentsQuiz.js";
-import { Notifications } from "./src/Models/Notifications.js";
-import studentsRoutes from "./src/routes/studentsRoutes.js";
-import matriculaRoutes from "./src/routes/matriculaRoutes.js";
+import "./src/models/CV.js"; // CV + Professionals y asociaciones con Users
+import "./src/models/UserData.js"; // Datos adicionales del usuario
+import "./src/models/CvTemplate.js"; // Plantillas de CV para manejador
+import "./src/models/PianoSong.js"; // Canciones del módulo Piano
+import { insertData } from "./src/database/insertData.js";
+import { loggerMiddleware } from "./src/middlewares/loggerMiddleware.js";
+
+import UsersRoutes from "./src/routes/UsersRoutes.js";
+import AuthRoutes from "./src/routes/AuthRoutes.js";
+import ComandsRoutes from "./src/routes/ComandsRoutes.js";
+import AccountsRoutes from "./src/routes/AccountsRoutes.js";
+import QuizRoutes from "./src/routes/QuizRoutes.js";
+import FormsRoutes from "./src/routes/FormsRoutes.js";
+import AlumniRoutes from "./src/routes/AlumniRoutes.js";
+import CvRoutes from "./src/routes/cvRoutes.js";
+import NotificationsRoutes from "./src/routes/NotificationsRoutes.js";
+import InventoryControlRoutes from "./src/routes/InventoryControlRoutes.js";
+import OrderRoutes from "./src/routes/OrderRoutes.js";
+import FinanceRoutes from "./src/routes/FinanceRoutes.js";
+
+import ImgRoutes from "./src/routes/ImgRoutes.js";
+import FilesRoutes from "./src/routes/FilesRoutes.js";
+import EditorRoutes from "./src/routes/EditorRoutes.js";
+import PianoRoutes from "./src/routes/PianoRoutes.js";
+
+
+import { initNotificationSocket } from "./src/sockets/notificationSocket.js";
+import { Server } from "socket.io";
+import { createServer } from "http";
+
+// ✅ __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+const httpServer = createServer(app);
+const api = "alumniapi";
+
 const PORT = 3000;
 
-app.use(express.json());
-
 const allowedOrigins = [
-  "http://localhost",
-  "http://localhost:8888",
   "http://localhost:5173",
-  "http://192.168.137.250:5173",
-  // "http://192.169.100.250:5173",
-  // "http://192.168.137.250:8888",
-  "http://181.39.125.155",
-  "http://aplicaciones.marianosamaniego.edu.ec",
-  "http://www.aplicaciones.marianosamaniego.edu.ec",
+  "http://localhost:4173",
+  "http://localhost:8888",
+  "http://192.168.1.100:8888",
+  "http://192.168.1.100:5173",
+  "http://192.168.1.100:5174",
+  "https://aplicaciones.marianosamaniego.edu.ec",
+  "https://www.aplicaciones.marianosamaniego.edu.ec",
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Verifica si el origen está en la lista de orígenes permitidos
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Acceso no permitido por CORS"));
-    }
+const io = new Server(httpServer, {
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
   },
-  optionsSuccessStatus: 200,
-  credentials: true, // Permite el envío de cookies y encabezados de autenticación
-};
+});
+
+// Middleware
+app.use(express.json());
 app.use(loggerMiddleware);
 
+// CORS
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) callback(null, true);
+    else callback(new Error("Acceso no permitido por CORS"));
+  },
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
 app.use(cors(corsOptions));
 
-app.use(express.json());
-// app.use((req, res, next) => {
-//   loggerMiddleware(req, res, () => next());
-// });
+app.use(`/${api}/img`, ImgRoutes);
 
-app.use("/photos", express.static("userPhotos"));
-app.use("/api/auth", authRoutes);
-app.use("/api/professionals", professionalsRoutes);
-app.use("/api/cv", cvRoutes);
-app.use("/api/quiz", quizRoutes);
-app.use("/api/linguiGeo", linguiGeoRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/charts", chartsRoutes);
-app.use("/api/register", registerRoutes);
-app.use("/api/logs", logRoutes);
-app.use("/api/config", configRoutes);
-app.use("/api/matriz", matrizRoutes);
-app.use("/api/student", studentsRoutes);
-app.use("/api/matricula", matriculaRoutes);
+app.use(`/${api}/img`, express.static(path.resolve(__dirname, "src/img")));
+app.use(`/${api}/files`, FilesRoutes);
 
-async function main() {
+// Sirve los archivos guardados en src/files
+app.use(`/${api}/files`, express.static(path.resolve(__dirname, "src/files")));
+
+
+// ⚠️ Ya NO necesitas estas dos si todo estará bajo /img:
+// app.use(`/${api}/photos`, express.static(`src/img/photos`));
+// app.use(`/${api}/inventory/imgEdDeli`, express.static(`src/img/EdDeli`));
+
+// ================================
+// RESTO DE RUTAS
+// ================================
+//app.use(`/${api}/editor`, EditorRoutes);
+//app.use(`/${api}/piano`, PianoRoutes);
+//app.use(`/${api}/inventory`, InventoryControlRoutes);
+//app.use(`/${api}/orders`, OrderRoutes);
+//app.use(`/${api}/finance`, FinanceRoutes);
+app.use(`/${api}/users`, UsersRoutes);
+app.use(`/${api}/quiz`, QuizRoutes);
+app.use(`/${api}`, AuthRoutes);
+app.use(`/${api}/comands`, ComandsRoutes);
+app.use(`/${api}`, AccountsRoutes);
+app.use(`/${api}/forms`, FormsRoutes);
+app.use(`/${api}/alumni`, AlumniRoutes);
+app.use(`/${api}/cv`, CvRoutes);
+app.use(`/${api}/notifications`, NotificationsRoutes);
+
+// Socket para notificaciones
+initNotificationSocket(io);
+
+export async function main() {
   try {
     await sequelize.authenticate();
-    // await sequelize.sync({ force: true });
-    // await insertData();
-    //await consoleData();
+  /*  await sequelize.sync({ force: true });
+     await insertData();  */
 
-    console.log("Conección realizada con éxito.");
-    app.listen(PORT, () => {
-      console.log(`Backend escuchando en el puesto ${PORT}`);
+
+    console.log("✅ Conexión realizada con éxito.");
+
+    httpServer.listen(PORT, () => {
+      console.log(`🟢 Backend + Socket.IO escuchando en puerto ${PORT}`);
     });
   } catch (error) {
-    console.error("Error en la conexión en la db:", error);
+    console.error("❌ Error en la conexión a la base de datos:", error);
   }
 }
 

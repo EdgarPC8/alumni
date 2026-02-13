@@ -27,4 +27,21 @@ function verifyJWT(token) {
   });
 }
 
-export { createAccessToken, getHeaderToken, verifyJWT };
+function createLicenseToken({ payload }) {
+
+  return new Promise((resolve, reject) => {
+    // const payload = { licenseKey }; // Puedes agregar más información si es necesario
+
+    jwt.sign(
+      payload,
+      "privateKey",
+      { algorithm: "HS256", expiresIn: payload.time }, // Token válido por 30 días
+      (err, token) => {
+        if (err) reject(err);
+        resolve(token);
+      }
+    );
+  });
+}
+
+export { createAccessToken, getHeaderToken, verifyJWT,createLicenseToken };

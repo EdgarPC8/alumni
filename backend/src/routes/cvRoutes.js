@@ -1,114 +1,105 @@
 import { Router } from "express";
 import {
+  getProfessional,
+  updateProfessional,
+  getFullCv,
+  getTemplates,
+  saveTemplates,
   addAcademicTraining,
   editAcademicTraining,
-  getAllAcademicTraining,
   deleteAcademicTraining,
+  getAllAcademicTraining,
   addTeachingExperience,
   editTeachingExperience,
-  getAllTeachingExperience,
   deleteTeachingExperience,
+  getAllTeachingExperience,
   addCoursesWorkshops,
   editCoursesWorkshops,
-  getAllCoursesWorkshops,
   deleteCoursesWorkshops,
+  getAllCoursesWorkshops,
   addIntellectualProduction,
   editIntellectualProduction,
-  getAllIntellectualProduction,
   deleteIntellectualProduction,
+  getAllIntellectualProduction,
   addBooks,
   editBooks,
-  getAllBooks,
   deleteBooks,
+  getAllBooks,
   addAcademicProfessionalMerits,
   editAcademicProfessionalMerits,
-  getAllAcademicProfessionalMerits,
   deleteAcademicProfessionalMerits,
+  getAllAcademicProfessionalMerits,
   addLanguages,
   editLanguages,
-  getAllLanguages,
   deleteLanguages,
+  getAllLanguages,
   addProfessionalExperience,
   editProfessionalExperience,
-  getAllProfessionalExperience,
   deleteProfessionalExperience,
-  getProfessionalExperienceById,
-  getLanguagesById,
-  getAcademicProfessionalMeritsById,
-  getAcademicTrainingById,
-  getTeachingExperienceById,
-  getCoursesWorkshopsById,
-  getIntellectualProductionById,
-  getBooksById,
+  getAllProfessionalExperience,
 } from "../controllers/cvController.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
-// import  loggerMiddleware from "../middlewares/loggerMiddleware.js";
-
+import { uploadCvPhoto, deleteCvPhoto } from "../middlewares/uploadCvPhotoMiddleware.js";
 
 const router = Router();
-// router.use(loggerMiddleware)
 
+router.use(isAuthenticated);
 
-router.post("/addProfessionalExperience",isAuthenticated,addProfessionalExperience);
-router.get("/getAllProfessionalExperience",isAuthenticated,getAllProfessionalExperience);
-router.put("/editProfessionalExperience/:experienceId",isAuthenticated,editProfessionalExperience);
-router.delete("/deleteProfessionalExperience/:experienceId",isAuthenticated,deleteProfessionalExperience);
-router.get("/getProfessionalExperienceById/:experienceId",isAuthenticated,getProfessionalExperienceById);
+// Perfil CV (incluye foto hoja de vida y datos editables)
+router.get("/professional", getProfessional);
+router.put("/professional", updateProfessional);
+router.put("/professional/photo", uploadCvPhoto);
+router.delete("/professional/photo", deleteCvPhoto);
+router.get("/full", getFullCv);
+router.get("/templates", getTemplates);
+router.post("/templates", saveTemplates);
 
+// Formación académica
+router.get("/academic-training", getAllAcademicTraining);
+router.post("/academic-training", addAcademicTraining);
+router.put("/academic-training/:academicId", editAcademicTraining);
+router.delete("/academic-training/:academicId", deleteAcademicTraining);
 
-router.post("/addLanguages", isAuthenticated, addLanguages);
-router.get("/getAllLanguages", isAuthenticated, getAllLanguages);
-router.put("/editLanguages/:languageId", isAuthenticated, editLanguages);
-router.delete("/deleteLanguages/:languageId", isAuthenticated, deleteLanguages);
-router.get("/getLanguagesById/:languageId",isAuthenticated,getLanguagesById);
+// Experiencia docente
+router.get("/teaching-experience", getAllTeachingExperience);
+router.post("/teaching-experience", addTeachingExperience);
+router.put("/teaching-experience/:teachingId", editTeachingExperience);
+router.delete("/teaching-experience/:teachingId", deleteTeachingExperience);
 
+// Cursos / talleres
+router.get("/courses-workshops", getAllCoursesWorkshops);
+router.post("/courses-workshops", addCoursesWorkshops);
+router.put("/courses-workshops/:courseId", editCoursesWorkshops);
+router.delete("/courses-workshops/:courseId", deleteCoursesWorkshops);
 
-router.post("/addAcademicProfessionalMerits",isAuthenticated,addAcademicProfessionalMerits);
-router.get("/getAllAcademicProfessionalMerits",isAuthenticated,getAllAcademicProfessionalMerits);
-router.put("/editAcademicProfessionalMerits/:meritId",isAuthenticated,editAcademicProfessionalMerits);
-router.delete("/deleteAcademicProfessionalMerits/:meritId",isAuthenticated,deleteAcademicProfessionalMerits);
-router.get("/getAcademicProfessionalMeritsById/:meritId",isAuthenticated,getAcademicProfessionalMeritsById);
+// Producción intelectual
+router.get("/intellectual-production", getAllIntellectualProduction);
+router.post("/intellectual-production", addIntellectualProduction);
+router.put("/intellectual-production/:intellectualId", editIntellectualProduction);
+router.delete("/intellectual-production/:intellectualId", deleteIntellectualProduction);
 
+// Libros
+router.get("/books", getAllBooks);
+router.post("/books", addBooks);
+router.put("/books/:bookId", editBooks);
+router.delete("/books/:bookId", deleteBooks);
 
-router.post("/addAcademicTraining", isAuthenticated, addAcademicTraining);
-router.get("/getAllAcademicTraining", isAuthenticated, getAllAcademicTraining);
-router.put("/editAcademicTraining/:academicId",isAuthenticated,editAcademicTraining);
-router.delete("/deleteAcademicTraining/:academicId",isAuthenticated,deleteAcademicTraining);
-router.get("/getAcademicTrainingById/:academicId",isAuthenticated,getAcademicTrainingById);
+// Méritos académicos y profesionales
+router.get("/merits", getAllAcademicProfessionalMerits);
+router.post("/merits", addAcademicProfessionalMerits);
+router.put("/merits/:meritId", editAcademicProfessionalMerits);
+router.delete("/merits/:meritId", deleteAcademicProfessionalMerits);
 
+// Idiomas
+router.get("/languages", getAllLanguages);
+router.post("/languages", addLanguages);
+router.put("/languages/:languageId", editLanguages);
+router.delete("/languages/:languageId", deleteLanguages);
 
-router.post("/addTeachingExperience", isAuthenticated, addTeachingExperience);
-router.get("/getAllTeachingExperience",isAuthenticated,getAllTeachingExperience);
-router.put("/editTeachingExperience/:teachingId",isAuthenticated,editTeachingExperience);
-router.delete("/deleteTeachingExperience/:teachingId",deleteTeachingExperience);
-router.get("/getTeachingExperienceById/:teachingId",isAuthenticated,getTeachingExperienceById);
-
-
-router.post("/addCoursesWorkshops", isAuthenticated, addCoursesWorkshops);
-router.get("/getAllCoursesWorkshops", isAuthenticated, getAllCoursesWorkshops);
-router.put("/editCoursesWorkshops/:courseId",isAuthenticated,editCoursesWorkshops);
-router.delete("/deleteCoursesWorkshops/:courseId",isAuthenticated,deleteCoursesWorkshops);
-router.get("/getCoursesWorkshopsById/:courseId",isAuthenticated,getCoursesWorkshopsById);
-
-
-router.post("/addIntellectualProduction",isAuthenticated,addIntellectualProduction);
-router.get("/getAllIntellectualProduction",isAuthenticated,getAllIntellectualProduction);
-router.put("/editIntellectualProduction/:intellectualId",isAuthenticated,editIntellectualProduction);
-router.delete("/deleteIntellectualProduction/:intellectualId",isAuthenticated,deleteIntellectualProduction);
-router.get("/getIntellectualProductionById/:intellectualId",isAuthenticated,getIntellectualProductionById);
-
-
-router.post("/addBooks", isAuthenticated, addBooks);
-router.get("/getAllBooks", isAuthenticated, getAllBooks);
-router.put("/editBooks/:bookId", isAuthenticated, editBooks);
-router.delete("/deleteBooks/:bookId", isAuthenticated, deleteBooks);
-router.get("/getBooksById/:bookId",isAuthenticated,getBooksById);
-
-
-
-
-
-
-
+// Experiencia profesional
+router.get("/professional-experience", getAllProfessionalExperience);
+router.post("/professional-experience", addProfessionalExperience);
+router.put("/professional-experience/:experienceId", editProfessionalExperience);
+router.delete("/professional-experience/:experienceId", deleteProfessionalExperience);
 
 export default router;
