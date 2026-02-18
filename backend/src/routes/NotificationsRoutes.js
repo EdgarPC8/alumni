@@ -1,20 +1,17 @@
 import { Router } from "express";
 import {
-  getNotificationsByUser,
+  getNotificationsByAccount,
   createNotification,
   markAsSeen,
   deleteNotification,
-  getUnreadCountByUser,
+  getUnreadCountByAccount,
 } from "../controllers/NotificationsController.js";
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
 
-
-
 const router = new Router();
 
-// routes/notifications.js
-router.get("/unreadCount/:userId", isAuthenticated,getUnreadCountByUser);
-router.get("/:userId", isAuthenticated,getNotificationsByUser);
+router.get("/unreadCount", isAuthenticated, getUnreadCountByAccount);
+router.get("/", isAuthenticated, getNotificationsByAccount);
 router.post("", isAuthenticated,createNotification);
 router.put("/seen/:id", isAuthenticated,markAsSeen);
 router.delete("/:id", isAuthenticated,deleteNotification);

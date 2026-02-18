@@ -11,8 +11,9 @@ import {
   deleteImage,
   scanImages as scanImagesController,
   downloadFolderZip,
+  getUnusedImages,
 } from "../controllers/ImgController.js";
-import { isAuthenticated } from "../middlewares/authMiddelware.js";
+import { isAuthenticated, isAdmin } from "../middlewares/authMiddelware.js";
 import {     
     makeImageUpload,
     deleteImage as deleteImageMiddleware,
@@ -48,14 +49,19 @@ router.delete(
 );
 
 // ESCANEAR
-// GET /eddeliapi/img/scan?folder=EdDeli&maxDepth=5
+// GET /alumniapi/img/scan?folder=alumni&maxDepth=5
 router.get(
   "/scan",
   isAuthenticated,
   scanImages(),
   scanImagesController,
 );
-// DELETE /eddeliapi/img/folder?folder=EdDeli/products
+
+// IMÁGENES NO UTILIZADAS (solo Admin/Programador)
+// GET /alumniapi/img/unused
+router.get("/unused", isAuthenticated, isAdmin, getUnusedImages);
+
+// DELETE /alumniapi/img/folder?folder=alumni/empresas
 router.delete("/folder", isAuthenticated, deleteFolder(), (req, res) => {
   res.json({ ok: true, ...req.imageManager });
 });

@@ -2,6 +2,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/connection.js";
 import { Users } from "./Users.js";
+import { Account } from "./Account.js";
 
 const Form = sequelize.define("form_forms", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -35,12 +36,12 @@ const Option = sequelize.define("form_options", {
   order: { type: DataTypes.INTEGER },
 });
 
-// Respuesta completa de un usuario
+// Respuesta completa (por cuenta)
 const Response = sequelize.define("form_responses", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   formId: { type: DataTypes.INTEGER },
+  accountId: { type: DataTypes.INTEGER, allowNull: true },
   userId: { type: DataTypes.INTEGER, allowNull: true },
-  
 });
 
 // Respuesta a una pregunta individual
@@ -52,25 +53,25 @@ const Answer = sequelize.define("form_answers", {
   selectedOptionIds: { type: DataTypes.JSON }, // para múltiples opciones
 });
 
-const UserForm = sequelize.define("form_usersForms", {
+// Asignación por cuenta (formId + accountId)
+const AccountForm = sequelize.define("form_accountForms", {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   formId: { type: DataTypes.INTEGER, allowNull: false },
-  userId: { type: DataTypes.INTEGER, allowNull: false },
-  assignedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }, // opcional
+  accountId: { type: DataTypes.INTEGER, allowNull: false },
+  assignedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 });
 
-
-// models/Form.js
-Form.belongsToMany(Users, {
-  through: UserForm,
+Form.belongsToMany(Account, {
+  through: AccountForm,
   foreignKey: "formId",
-  otherKey: "userId",
+  otherKey: "accountId",
+  as: "accounts",
 });
-// models/Users.js
-Users.belongsToMany(Form, {
-  through: UserForm,
-  foreignKey: "userId",
+Account.belongsToMany(Form, {
+  through: AccountForm,
+  foreignKey: "accountId",
   otherKey: "formId",
+  as: "forms",
 });
 
 
@@ -98,12 +99,10 @@ Form.hasMany(Response, {
 });
 Response.belongsTo(Form, { foreignKey: "formId" });
 
-// Una respuesta pertenece a un usuario
-Users.hasMany(Response, {
-  foreignKey: "userId",
-  onDelete: "SET NULL", // o "CASCADE" según lo que prefieras
-});
+Users.hasMany(Response, { foreignKey: "userId", onDelete: "SET NULL" });
 Response.belongsTo(Users, { foreignKey: "userId" });
+Account.hasMany(Response, { foreignKey: "accountId", onDelete: "CASCADE" });
+Response.belongsTo(Account, { foreignKey: "accountId" });
 
 // Una respuesta global tiene muchas respuestas a preguntas
 Response.hasMany(Answer, {
@@ -128,5 +127,5 @@ export {
   Option,
   Response,
   Answer,
-  UserForm
+  AccountForm,
 };

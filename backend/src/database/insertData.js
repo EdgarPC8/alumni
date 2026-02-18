@@ -15,40 +15,16 @@ import {
 
 } from '../models/Quiz.js';
 import { Account, AccountRoles } from '../models/Account.js';
-import { sequelize } from './connection.js';
 import { Careers, Matricula, Matriz, Periods } from '../models/Alumni.js';
-import { Form,
-Question,
-  Option,
-  Response,
-  Answer,
-  UserForm } from '../models/Forms.js';
+import { Form, Question, Option, Response, Answer, AccountForm } from "../models/Forms.js";
 import { Notifications } from '../models/Notifications.js';
+import { NotificationProgram } from '../models/NotificationProgram.js';
 
-import { 
-  InventoryCategory,
-  InventoryRecipe,
-  InventoryMovement,
-  InventoryProduct, 
-  InventoryUnit,
-  HomeProduct,
-  Store,
-  Catalog,
-  StoreProduct
-} from '../models/Inventory.js';
-import { 
-  Customer ,
-  Order,
-  OrderItem
-} from '../models/Orders.js';
-import { Expense, 
-  Income ,
-  ItemGroup,
-  ItemGroupItem,
-  Payment
-  
-} from '../models/Finance.js';
 import { CvTemplate } from '../models/CvTemplate.js';
+import { Empresa } from '../models/Empresa.js';
+import { OfertaLaboral } from '../models/OfertaLaboral.js';
+import { Postulacion } from '../models/Postulacion.js';
+import { sequelize } from './connection.js';
 
 
 
@@ -84,47 +60,6 @@ const unwrapJsonString = (value, maxDepth = 12) => {
   return v;
 };
 
-// Si tu columna en BD es TEXT/VARCHAR y quieres guardar JSON como string
-const normalizeJsonFieldToString = (value) => {
-  const v = unwrapJsonString(value);
-
-  if (v === null || v === undefined) return null;
-
-  // ya es string "normal"
-  if (typeof v === "string") return v;
-
-  // es objeto/array => lo guardamos UNA sola vez como string
-  try {
-    return JSON.stringify(v);
-  } catch {
-    return null;
-  }
-};
-
-// Aplica limpieza a una tabla basada en config
-const sanitizeRows = (rows, config = {}) => {
-  if (!Array.isArray(rows)) return rows;
-
-  const jsonStringFields = config.jsonStringFields || [];
-
-  return rows.map((row) => {
-    if (!row || typeof row !== "object") return row;
-
-    for (const field of jsonStringFields) {
-      if (field in row) row[field] = normalizeJsonFieldToString(row[field]);
-    }
-
-    return row;
-  });
-};
-// Campos que suelen “inflarse” por doble stringify
-const SANITIZE_CONFIG = {
-  InventoryProduct: {
-    jsonStringFields: ["wholesaleRules"], // ✅ tu caso
-  },
-};
-
-
 export const insertData = async () => {
   try {
     await fs.access(backupFilePath);
@@ -133,13 +68,27 @@ export const insertData = async () => {
     const data = await fs.readFile(backupFilePath, "utf8");
     const jsonData = JSON.parse(data);
 
-    // ===== Limpieza ANTES de insertar (evita que vuelva a crecer) =====
-    jsonData.InventoryProduct = sanitizeRows(
-      jsonData.InventoryProduct,
-      SANITIZE_CONFIG.InventoryProduct
-    );
+    // Limpiar tablas antes de insertar (evita UNIQUE constraint con ids existentes)
+    await sequelize.query("PRAGMA foreign_keys = OFF");
+    const tablesToTruncate = [
+      "quiz_answers", "quiz_options", "quiz_attempts", "quiz_quizzes_users",
+      "quiz_questions", "quiz_quizzes",
+      "bolsa_postulacion", "bolsa_oferta_laboral", "bolsa_empresa",
+      "cv_templates", "accountRoles", "alumni_matricula", "alumni_matrices",
+      "form_accountForms", "form_usersForms", "form_answers", "form_responses", "form_options",
+      "form_questions", "form_forms",
+      "notification_programs", "notifications", "account", "alumni_careers", "alumni_periods", "roles", "users",
+    ];
+    for (const t of tablesToTruncate) {
+      try {
+        await sequelize.query(`DELETE FROM ${t}`);
+      } catch (e) {
+        // ignorar si la tabla no existe
+      }
+    }
+    await sequelize.query("PRAGMA foreign_keys = ON");
 
-    // Si tuviste otros campos como selectedOptionIds (lo mantengo igual)
+    // Limpieza de QuizAnswers (selectedOptionIds)
     if (Array.isArray(jsonData.QuizAnswers)) {
       jsonData.QuizAnswers = jsonData.QuizAnswers.map((row) => {
         if (typeof row.selectedOptionIds === "string") {
@@ -162,7 +111,9 @@ export const insertData = async () => {
     await Option.bulkCreate(jsonData.Option, { returning: true });
     await Response.bulkCreate(jsonData.Response, { returning: true });
     await Answer.bulkCreate(jsonData.Answer, { returning: true });
-    await UserForm.bulkCreate(jsonData.UserForm, { returning: true });
+    if (Array.isArray(jsonData.AccountForm) && jsonData.AccountForm.length > 0) {
+      await AccountForm.bulkCreate(jsonData.AccountForm, { returning: true });
+    }
 
     await Matriz.bulkCreate(jsonData.Matriz, { returning: true });
     await Matricula.bulkCreate(jsonData.Matricula, { returning: true });
@@ -177,42 +128,48 @@ export const insertData = async () => {
     await QuizAnswers.bulkCreate(jsonData.QuizAnswers, { returning: true });
     await QuizAssignment.bulkCreate(jsonData.QuizAssignment, { returning: true });
 
-    await InventoryCategory.bulkCreate(jsonData.InventoryCategory, { returning: true });
-    await InventoryUnit.bulkCreate(jsonData.InventoryUnit, { returning: true });
-
-    // ✅ ya llega limpio (wholesaleRules sin escapes infinitos)
-    await InventoryProduct.bulkCreate(jsonData.InventoryProduct, { returning: true });
-
-    await InventoryRecipe.bulkCreate(jsonData.InventoryRecipe, { returning: true });
-    await InventoryMovement.bulkCreate(jsonData.InventoryMovement, { returning: true });
-
-    await Customer.bulkCreate(jsonData.Customer, { returning: true });
-    await Order.bulkCreate(jsonData.Order, { returning: true });
-    await OrderItem.bulkCreate(jsonData.OrderItem, { returning: true });
-
-    await Expense.bulkCreate(jsonData.Expense, { returning: true });
-    await Income.bulkCreate(jsonData.Income, { returning: true });
-
-    await Store.bulkCreate(jsonData.Store, { returning: true });
-    await HomeProduct.bulkCreate(jsonData.HomeProduct, { returning: true });
-    await Catalog.bulkCreate(jsonData.Catalog, { returning: true });
-    await StoreProduct.bulkCreate(jsonData.StoreProduct, { returning: true });
-
-    await ItemGroup.bulkCreate(jsonData.ItemGroup, { returning: true });
-    await ItemGroupItem.bulkCreate(jsonData.ItemGroupItem, { returning: true });
-    await Payment.bulkCreate(jsonData.Payment, { returning: true });
-
     if (Array.isArray(jsonData.CvTemplates) && jsonData.CvTemplates.length > 0) {
       await CvTemplate.bulkCreate(jsonData.CvTemplates, { returning: true });
+    }
+
+    // Bolsa de empleo
+    if (Array.isArray(jsonData.Empresa) && jsonData.Empresa.length > 0) {
+      await Empresa.bulkCreate(jsonData.Empresa, { returning: true });
+    }
+    if (Array.isArray(jsonData.OfertaLaboral) && jsonData.OfertaLaboral.length > 0) {
+      await OfertaLaboral.bulkCreate(jsonData.OfertaLaboral, { returning: true });
+    }
+    if (Array.isArray(jsonData.Postulacion) && jsonData.Postulacion.length > 0) {
+      await Postulacion.bulkCreate(jsonData.Postulacion, { returning: true });
+    }
+
+    if (Array.isArray(jsonData.NotificationProgram) && jsonData.NotificationProgram.length > 0) {
+      await NotificationProgram.bulkCreate(jsonData.NotificationProgram, { returning: true });
+    } else {
+      const count = await NotificationProgram.count();
+      if (count === 0) {
+        await NotificationProgram.bulkCreate([
+          { code: "BUENOS_DIAS", title: "Buenos días", message: "¡Que tengas un excelente día!", scheduleType: "daily", scheduleTime: "08:00", scopeType: "user", targetType: "all_users", active: false },
+          { code: "BUENAS_TARDES", title: "Buenas tardes", message: "¡Que tengas una excelente tarde!", scheduleType: "daily", scheduleTime: "14:00", scopeType: "user", targetType: "all_users", active: false },
+          { code: "BIENVENIDA", title: "Bienvenida", message: "¡Bienvenido al sistema! Esperamos que tengas una excelente experiencia.", scheduleType: "manual", scopeType: "user", targetType: "all_users", active: true },
+          { code: "ACTUALIZACION", title: "Actualización del sistema", message: "Se realizaron mejoras en el sistema. ¡Explora las nuevas funcionalidades!", scheduleType: "manual", scopeType: "user", targetType: "all_users", active: true },
+        ]);
+      }
     }
 
     console.log("Datos insertados correctamente desde el archivo de respaldo.");
   } catch (error) {
     if (error.code === "ENOENT") {
-      await fs.writeFile(
-        backupFilePath,
-        JSON.stringify({ Roles: [], Users: [], Account: [] }, null, 2)
-      );
+      const defaultBackup = {
+        Roles: [], Users: [], Account: [], AccountRoles: [],
+        Careers: [], Periods: [], Matriz: [], Matricula: [],
+        Form: [], Question: [], Option: [], Response: [], Answer: [], AccountForm: [],
+        NotificationProgram: [], Notifications: [], QuizQuizzes: [], QuizQuestions: [], QuizOptions: [],
+        QuizAttempts: [], QuizAnswers: [], QuizAssignment: [],
+        CvTemplates: [],
+        Empresa: [], OfertaLaboral: [], Postulacion: [],
+      };
+      await fs.writeFile(backupFilePath, JSON.stringify(defaultBackup, null, 2));
       console.log("Archivo de respaldo creado: backup.json");
     } else {
       console.error("Error al insertar datos:", error);
@@ -234,12 +191,13 @@ export const saveBackup = async () => {
     const OptionData = await Option.findAll({ raw: true });
     const ResponseData = await Response.findAll({ raw: true });
     const AnswerData = await Answer.findAll({ raw: true });
-    const UserFormData = await UserForm.findAll({ raw: true });
+    const AccountFormData = await AccountForm.findAll({ raw: true });
 
     const MatrizData = await Matriz.findAll({ raw: true });
     const MatriculaData = await Matricula.findAll({ raw: true });
 
     const AccountRolesData = await AccountRoles.findAll({ raw: true });
+    const NotificationProgramData = await NotificationProgram.findAll({ raw: true });
     const NotificationsData = await Notifications.findAll({ raw: true });
 
     const QuizAnswersData = await QuizAnswers.findAll({ raw: true });
@@ -249,34 +207,10 @@ export const saveBackup = async () => {
     const QuizQuizzesData = await QuizQuizzes.findAll({ raw: true });
     const QuizAssignmentData = await QuizAssignment.findAll({ raw: true });
 
-    const InventoryCategoryData = await InventoryCategory.findAll({ raw: true });
-    const InventoryUnitData = await InventoryUnit.findAll({ raw: true });
-
-    // ✅ IMPORTANTE: raw + sanitize
-    const InventoryProductData = sanitizeRows(
-      await InventoryProduct.findAll({ raw: true }),
-      SANITIZE_CONFIG.InventoryProduct
-    );
-
-    const InventoryRecipeData = await InventoryRecipe.findAll({ raw: true });
-    const InventoryMovementData = await InventoryMovement.findAll({ raw: true });
-
-    const CustomerData = await Customer.findAll({ raw: true });
-    const OrderData = await Order.findAll({ raw: true });
-    const OrderItemData = await OrderItem.findAll({ raw: true });
-
-    const ExpenseData = await Expense.findAll({ raw: true });
-    const IncomeData = await Income.findAll({ raw: true });
-
-    const HomeProductData = await HomeProduct.findAll({ raw: true });
-    const StoreData = await Store.findAll({ raw: true });
-    const CatalogData = await Catalog.findAll({ raw: true });
-    const StoreProductData = await StoreProduct.findAll({ raw: true });
-
-    const ItemGroupData = await ItemGroup.findAll({ raw: true });
-    const ItemGroupItemData = await ItemGroupItem.findAll({ raw: true });
-    const PaymentData = await Payment.findAll({ raw: true });
     const CvTemplatesData = await CvTemplate.findAll({ raw: true });
+    const EmpresaData = await Empresa.findAll({ raw: true });
+    const OfertaLaboralData = await OfertaLaboral.findAll({ raw: true });
+    const PostulacionData = await Postulacion.findAll({ raw: true });
 
     const backupData = {
       Roles: rolesData,
@@ -289,10 +223,11 @@ export const saveBackup = async () => {
       Option: OptionData,
       Response: ResponseData,
       Answer: AnswerData,
-      UserForm: UserFormData,
+      AccountForm: AccountFormData,
       Matriz: MatrizData,
       Matricula: MatriculaData,
       AccountRoles: AccountRolesData,
+      NotificationProgram: NotificationProgramData,
       Notifications: NotificationsData,
       QuizAnswers: QuizAnswersData,
       QuizAttempts: QuizAttemptsData,
@@ -300,24 +235,10 @@ export const saveBackup = async () => {
       QuizQuestions: QuizQuestionsData,
       QuizQuizzes: QuizQuizzesData,
       QuizAssignment: QuizAssignmentData,
-      InventoryCategory: InventoryCategoryData,
-      InventoryUnit: InventoryUnitData,
-      InventoryProduct: InventoryProductData, // ✅ limpio
-      InventoryRecipe: InventoryRecipeData,
-      InventoryMovement: InventoryMovementData,
-      Customer: CustomerData,
-      Order: OrderData,
-      OrderItem: OrderItemData,
-      Expense: ExpenseData,
-      Income: IncomeData,
-      Store: StoreData,
-      HomeProduct: HomeProductData,
-      Catalog: CatalogData,
-      StoreProduct: StoreProductData,
-      ItemGroup: ItemGroupData,
-      ItemGroupItem: ItemGroupItemData,
-      Payment: PaymentData,
       CvTemplates: CvTemplatesData,
+      Empresa: EmpresaData,
+      OfertaLaboral: OfertaLaboralData,
+      Postulacion: PostulacionData,
     };
 
     await fs.mkdir(backups, { recursive: true });

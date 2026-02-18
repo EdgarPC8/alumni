@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getMatriz, getMatrizStats, addMatriz, editMatriz, deleteMatriz } from "../controllers/Alumni/MatrizController.js";
-import { getCareers,addCareer,editCareer,deleteCareer } from "../controllers/Alumni/CareerController.js";
-import { getPeriods,addPeriod,editPeriod ,deletePeriod} from "../controllers/Alumni/PeriodController.js";
-import { getMatriculas,addMatriculasBulk } from "../controllers/Alumni/MatriculaController.js";
-import { createAccountsFromMatriculas, filterUsers,getEspecialidades,getPeriodosAcademicos } from "../controllers/Alumni/AlumniController.js";
+import { getMatriz, getMatrizStats, addMatriz, editMatriz, deleteMatriz } from "../controllers/MatrizController.js";
+import { getCareers,addCareer,editCareer,deleteCareer } from "../controllers/CareerController.js";
+import { getPeriods,addPeriod,editPeriod ,deletePeriod} from "../controllers/PeriodController.js";
+import { getMatriculas,addMatriculasBulk } from "../controllers/MatriculaController.js";
+import { createAccountsFromMatriculas, filterUsers, filterAccounts, getEspecialidades, getPeriodosAcademicos } from "../controllers/AlumniController.js";
 
 
 import { isAuthenticated } from "../middlewares/authMiddelware.js";
@@ -14,7 +14,8 @@ const router = new Router();
 router.get("/createAccounts",createAccountsFromMatriculas);                             
 
 
-router.post("/filterUsers", isAuthenticated,filterUsers);                             
+router.post("/filterUsers", isAuthenticated, filterUsers);
+router.post("/filterAccounts", isAuthenticated, filterAccounts);                             
 router.get("/matricula", isAuthenticated,getMatriculas);                             
 router.post("/matricula/bulk", isAuthenticated,addMatriculasBulk);                             
 router.get("/matriz", isAuthenticated, getMatriz);

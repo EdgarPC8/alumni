@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/connection.js";
 import { Users } from "./Users.js";
+import { Account } from "./Account.js";
 
 export const Notifications = sequelize.define("notifications", {
   id: {
@@ -10,7 +11,11 @@ export const Notifications = sequelize.define("notifications", {
   },
   userId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
+  },
+  accountId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   type: {
     type: DataTypes.ENUM("info", "alert", "reminder", "message"),
@@ -27,6 +32,11 @@ export const Notifications = sequelize.define("notifications", {
   link: {
     type: DataTypes.STRING(255),
     allowNull: true,
+  },
+  imageUrl: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+    comment: "Ruta relativa de imagen para mostrar en la notificación",
   },
   deleted: {
     type: DataTypes.BOOLEAN,
@@ -45,13 +55,7 @@ export const Notifications = sequelize.define("notifications", {
   updatedAt: false,
 });
 
-// Asociación con Users
-Users.hasMany(Notifications, {
-  foreignKey: "userId",
-  sourceKey: "id",
-  onDelete: "CASCADE"
-});
-Notifications.belongsTo(Users, {
-  foreignKey: "userId",
-  targetKey: "id"
-});
+Users.hasMany(Notifications, { foreignKey: "userId", sourceKey: "id", onDelete: "CASCADE" });
+Notifications.belongsTo(Users, { foreignKey: "userId", targetKey: "id" });
+Account.hasMany(Notifications, { foreignKey: "accountId", sourceKey: "id", onDelete: "CASCADE" });
+Notifications.belongsTo(Account, { foreignKey: "accountId", targetKey: "id" });

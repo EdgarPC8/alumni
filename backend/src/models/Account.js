@@ -65,4 +65,5 @@ Users.hasMany(Account, {
 Account.belongsTo(Users, {
   foreignKey: "userId",
   targetKey: "id",
+  as: "user",
 });

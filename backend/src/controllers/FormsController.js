@@ -5,14 +5,14 @@ import {
     Option,
     Response,
     Answer,
-    UserForm,
+    AccountForm,
   } from "../models/Forms.js";
-
-  
-  import { Op } from "sequelize";
+import { Op } from "sequelize";
+import { Account } from "../models/Account.js";
+import { Roles } from "../models/Roles.js";
 import { Users } from "../models/Users.js";
 import { Notifications } from "../models/Notifications.js";
-import { sendNotificationToUser } from "../sockets/notificationSocket.js";
+import { sendNotificationToAccount } from "../sockets/notificationSocket.js";
   
   // Obtener todos los formularios
   export const getForms = async (req, res) => {
@@ -23,10 +23,8 @@ import { sendNotificationToUser } from "../sockets/notificationSocket.js";
       // Recorrer cada formulario para contar los usuarios asignados y los que han respondido
       const formsWithStats = await Promise.all(
         data.map(async (form) => {
-          const countUserAssign = await UserForm.count({
-            where: {
-              formId: form.id,
-            },
+          const countUserAssign = await AccountForm.count({
+            where: { formId: form.id },
           });
   
           const countUserResponde = await Response.count({
@@ -255,83 +253,71 @@ export const deleteForm = async (req, res) => {
     }
   };
 
-// GET /api/forms/assign/:formId
-export const getUsersByFormAssign = async (req, res) => {
+// GET /api/forms/assign/:formId - retorna cuentas asignadas (con user)
+export const getAccountsByFormAssign = async (req, res) => {
   const { formId } = req.params;
-  console.log(formId)
-
   try {
     const form = await Form.findByPk(formId, {
       include: [
         {
-          model: Users,
-          through: { attributes: [] }, // esto oculta la tabla intermedia
-        }
-      ]
+          model: Account,
+          as: "accounts",
+          through: { attributes: [] },
+          include: [
+            { model: Users, as: "user", attributes: ["id", "ci", "firstName", "secondName", "firstLastName", "secondLastName"] },
+            { model: Roles, as: "roles", through: { attributes: [] }, attributes: ["id", "name"] },
+          ],
+        },
+      ],
     });
-
-    if (!form) {
-      return res.status(404).json({ message: 'Formulario no encontrado' });
-    }
-
-    res.status(200).json(form.users); // o form.Users dependiendo de cómo defines el alias
+    if (!form) return res.status(404).json({ message: "Formulario no encontrado" });
+    res.status(200).json(form.accounts || []);
   } catch (error) {
-    console.error('Error al obtener usuarios asignados:', error);
-    res.status(500).json({ message: 'Error en el servidor.' });
+    console.error("Error al obtener cuentas asignadas:", error);
+    res.status(500).json({ message: "Error en el servidor." });
   }
 };
 
 
 
 
-// DELETE /api/forms/assign/:formId/:userId
-export const deleteUsersByFormAssign = async (req, res) => {
-  const { formId, userId } = req.params;
-
+// DELETE /api/forms/assign/:formId/:accountId
+export const deleteAccountByFormAssign = async (req, res) => {
+  const { formId, accountId } = req.params;
   try {
-    const deleted = await UserForm.destroy({
-      where: {
-        formId,
-        userId
-      }
+    const deleted = await AccountForm.destroy({
+      where: { formId, accountId },
     });
-
-    if (deleted === 0) {
-      return res.status(404).json({ message: 'Asignación no encontrada.' });
-    }
-
-    res.status(200).json({ message: 'Usuario eliminado de la asignación correctamente.' });
+    if (deleted === 0) return res.status(404).json({ message: "Asignación no encontrada." });
+    res.status(200).json({ message: "Cuenta eliminada de la asignación correctamente." });
   } catch (error) {
-    console.error('Error al eliminar asignación de usuario:', error);
-    res.status(500).json({ message: 'Error en el servidor.' });
+    console.error("Error al eliminar asignación:", error);
+    res.status(500).json({ message: "Error en el servidor." });
   }
 };
 
 
 
 
-export const assignUsersToForm = async (req, res) => {
+export const assignAccountsToForm = async (req, res) => {
   const { formId } = req.params;
-  const { userIds } = req.body;
+  const { accountIds } = req.body;
 
   try {
-    const assignments = userIds.map(userId => ({ formId, userId }));
-    await UserForm.bulkCreate(assignments, { ignoreDuplicates: true });
+    const assignments = accountIds.map((accountId) => ({ formId, accountId }));
+    await AccountForm.bulkCreate(assignments, { ignoreDuplicates: true });
 
-    // Crear notificación para cada usuario
-    const notifications = userIds.map(userId => ({
-      userId,
+    const notifications = accountIds.map((accountId) => ({
+      accountId,
       type: "info",
       title: "Encuesta asignada",
       message: "Tienes una nueva encuesta disponible para responder.",
-      link: `/myforms/${formId}`
+      link: `/myforms/${formId}`,
     }));
     await Notifications.bulkCreate(notifications);
 
-    // Emitir a cada usuario individual
-    userIds.forEach(userId => {
-      
-      sendNotificationToUser(userId, {
+    accountIds.forEach((accountId) => {
+      sendNotificationToAccount(accountId, {
         title: "Encuesta asignada",
         message: "Tienes una nueva encuesta disponible para responder.",
         link: `/myforms/${formId}`,
@@ -339,10 +325,10 @@ export const assignUsersToForm = async (req, res) => {
       });
     });
 
-    res.status(201).json({ message: "Usuarios asignados y notificados correctamente" });
+    res.status(201).json({ message: "Cuentas asignadas y notificadas correctamente" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error al asignar usuarios o notificar" });
+    res.status(500).json({ message: "Error al asignar o notificar" });
   }
 };
 
@@ -423,16 +409,17 @@ export const getResponses = async (req, res) => {
 };
 
   
-  export const getFormsByUserId = async (req, res) => {
-    const { userId } = req.params;
+  export const getFormsByAccountId = async (req, res) => {
+    const { accountId } = req.params;
   
     try {
       // Traer formularios asignados al usuario
       const assignedForms = await Form.findAll({
         include: [
           {
-            model: Users,
-            where: { id: userId },
+            model: Account,
+            as: "accounts",
+            where: { id: accountId },
             attributes: [],
             through: { attributes: [] },
           },
@@ -443,15 +430,12 @@ export const getResponses = async (req, res) => {
       const formIds = assignedForms.map((form) => form.id);
   
       // Traer todas las respuestas del usuario en esos formularios
-      const userResponses = await Response.findAll({
-        where: {
-          userId,
-          formId: formIds, // Sequelize lo convierte a IN (...)
-        },
+      const accountResponses = await Response.findAll({
+        where: { accountId, formId: formIds },
       });
   
       // Crear un Set de formIds ya respondidos
-      const respondedFormIds = new Set(userResponses.map((r) => r.formId));
+      const respondedFormIds = new Set(accountResponses.map((r) => r.formId));
   
       // Agregar propiedad `responded` a cada formulario
       const formsWithStatus = assignedForms.map((form) => ({
@@ -462,7 +446,7 @@ export const getResponses = async (req, res) => {
       res.status(200).json(formsWithStatus);
     } catch (error) {
       console.error("Error al obtener encuestas del usuario:", error);
-      res.status(500).json({ message: "Error al obtener encuestas del usuario" });
+      res.status(500).json({ message: "Error al obtener encuestas de la cuenta" });
     }
   };
   
@@ -505,19 +489,22 @@ export const getResponses = async (req, res) => {
       }
     */
     const { id } = req.params;
-    const { userId, answers } = req.body;
+    const { accountId, answers } = req.body;
   
     try {
-      const existing = await Response.findOne({
-        where: { formId: id, userId }
-      });
-      
-      if (existing) {
-        return res.status(400).json({ message: "Este usuario ya respondió esta encuesta." });
+      if (!accountId) {
+        return res.status(400).json({ message: "accountId es requerido." });
       }
-
+      const existing = await Response.findOne({
+        where: { formId: id, accountId },
+      });
+      if (existing) {
+        return res.status(400).json({ message: "Esta cuenta ya respondió esta encuesta." });
+      }
+      const account = await Account.findByPk(accountId);
       const response = await Response.create({
-        userId,
+        accountId,
+        userId: account?.userId ?? null,
         formId: id,
       });
   

@@ -1,56 +1,54 @@
 import { Notifications } from "../models/Notifications.js";
-// controllers/NotificationsController.js
+import { Op } from "sequelize";
 
-export const getUnreadCountByUser = async (req, res) => {
-  const { userId } = req.params;
+function buildNotificationWhere(accountId, userId) {
+  const or = [];
+  if (accountId) or.push({ accountId });
+  if (userId) or.push({ userId, accountId: null });
+  if (or.length === 0) return { deleted: false, id: -1 };
+  return { deleted: false, [Op.or]: or };
+}
 
+export const getUnreadCountByAccount = async (req, res) => {
+  const { accountId, userId } = req.user || {};
+  if (!accountId && !userId) return res.status(401).json({ message: "No autenticado" });
   try {
     const count = await Notifications.count({
       where: {
-        userId,
+        ...buildNotificationWhere(accountId, userId),
         seen: false,
-        deleted: false
-      }
+      },
     });
-
     res.json({ count });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
-// controllers/NotificationsController.js
-// Obtener todas las notificaciones de un usuario
-export const getNotificationsByUser = async (req, res) => {
-  const { userId } = req.params;
-  console.log(userId)
+export const getNotificationsByAccount = async (req, res) => {
+  const { accountId, userId } = req.user || {};
+  if (!accountId && !userId) return res.status(401).json({ message: "No autenticado" });
   try {
     const notifications = await Notifications.findAll({
-      where: {
-        userId,
-        deleted: false  // importante para omitir eliminadas
-      },
-      order: [['createdAt', 'DESC']]
+      where: buildNotificationWhere(accountId, userId),
+      order: [["createdAt", "DESC"]],
     });
-    res.status(201).json(notifications);
-
-    
+    res.json(notifications);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Crear una nueva notificación
 export const createNotification = async (req, res) => {
-  const { userId, type, title, message, link } = req.body;
+  const { userId, accountId, type, title, message, link } = req.body;
   try {
     const notification = await Notifications.create({
-      userId,
+      userId: userId || null,
+      accountId: accountId || null,
       type,
       title,
       message,
-      link
+      link,
     });
     res.status(201).json(notification);
   } catch (error) {
@@ -58,12 +56,14 @@ export const createNotification = async (req, res) => {
   }
 };
 
-// Marcar notificación como vista
 export const markAsSeen = async (req, res) => {
   const { id } = req.params;
+  const { accountId, userId } = req.user || {};
   try {
     const notification = await Notifications.findByPk(id);
     if (!notification) return res.status(404).json({ message: "No encontrada" });
+    if (notification.accountId && notification.accountId !== accountId) return res.status(403).json({ message: "No autorizado" });
+    if (notification.userId && notification.accountId == null && notification.userId !== userId) return res.status(403).json({ message: "No autorizado" });
     notification.seen = true;
     await notification.save();
     res.json(notification);
@@ -72,13 +72,14 @@ export const markAsSeen = async (req, res) => {
   }
 };
 
-// Eliminar una notificación
 export const deleteNotification = async (req, res) => {
   const { id } = req.params;
+  const { accountId, userId } = req.user || {};
   try {
     const notification = await Notifications.findByPk(id);
     if (!notification) return res.status(404).json({ message: "No encontrada" });
-
+    if (notification.accountId && notification.accountId !== accountId) return res.status(403).json({ message: "No autorizado" });
+    if (notification.userId && notification.accountId == null && notification.userId !== userId) return res.status(403).json({ message: "No autorizado" });
     notification.deleted = true;
     await notification.save();
     res.json({ message: "Notificación marcada como eliminada" });
