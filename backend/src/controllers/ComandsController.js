@@ -68,9 +68,20 @@ export const reloadBdController = async (req, res) => {
   try {
     console.log("🔄 Reiniciando base de datos...");
 
+    const dialect = sequelize.getDialect?.() || "sqlite";
+
+    // MySQL: deshabilitar FK para poder dropear tablas en cualquier orden
+    if (dialect === "mysql") {
+      await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+    }
+
     // 1) Dropea TODAS las tablas y las vuelve a crear según los modelos
     await sequelize.sync({ force: true });
     console.log("📦 Tablas recreadas con sequelize.sync({ force: true })");
+
+    if (dialect === "mysql") {
+      await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
+    }
 
     // 2) Vuelve a insertar los datos desde backup.json
     await insertData();
