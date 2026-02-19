@@ -17,6 +17,7 @@ import crypto from "crypto";
  */
 export const loginSmistms = async (req, res) => {
   try {
+    console.log("[SMISTMS] Payload recibido:", JSON.stringify(req.body, null, 2));
     const {
       ci,
       id_estudiante,
@@ -38,53 +39,50 @@ export const loginSmistms = async (req, res) => {
       return res.status(500).json({ message: "Rol Estudiante no configurado" });
     }
 
-    let user = await Users.findOne({ where: { ci: String(ci).trim() } });
+    const ciNorm = String(ci).trim();
+    let user = await Users.findOne({ where: { ci: ciNorm } });
 
+    // 1. Usuario no existe → crear usuario + cuenta Estudiante
     if (!user) {
-      const passwordPlain = crypto.randomBytes(24).toString("hex");
-      const hashedPassword = await bcrypt.hash(passwordPlain, 10);
-
+      const hashedPassword = await bcrypt.hash(crypto.randomBytes(24).toString("hex"), 10);
       user = await Users.create({
-        ci: String(ci).trim(),
+        ci: ciNorm,
         firstName: firstName || "",
         secondName: secondName || "",
         firstLastName: firstLastName || "",
         secondLastName: secondLastName || "",
       });
-
       const newAccount = await Account.create({
-        username: String(ci).trim(),
+        username: ciNorm,
         password: hashedPassword,
         userId: user.id,
       });
-
       await AccountRoles.create({
         accountId: newAccount.id,
         roleId: studentRole.id,
       });
-
-      const payload = {
-        userId: user.id,
-        accountId: newAccount.id,
-        rolId: studentRole.id,
-        loginRol: studentRole.name,
-      };
-      const token = await createAccessToken({ payload });
+      const token = await createAccessToken({
+        payload: {
+          userId: user.id,
+          accountId: newAccount.id,
+          rolId: studentRole.id,
+          loginRol: studentRole.name,
+        },
+      });
       return res.json({ message: "Usuario creado y autenticado", token });
     }
 
+    // 2. Usuario existe → buscar cuenta (idealmente con rol Estudiante)
     const account = await Account.findOne({
       where: { userId: user.id },
-      include: [
-        { model: Roles, as: "roles", through: { attributes: [] } },
-      ],
+      include: [{ model: Roles, as: "roles", through: { attributes: [] } }],
     });
 
+    // No tiene cuenta → crear cuenta Estudiante
     if (!account) {
-      const passwordPlain = crypto.randomBytes(24).toString("hex");
-      const hashedPassword = await bcrypt.hash(passwordPlain, 10);
+      const hashedPassword = await bcrypt.hash(crypto.randomBytes(24).toString("hex"), 10);
       const newAccount = await Account.create({
-        username: String(ci).trim(),
+        username: ciNorm,
         password: hashedPassword,
         userId: user.id,
       });
@@ -92,28 +90,29 @@ export const loginSmistms = async (req, res) => {
         accountId: newAccount.id,
         roleId: studentRole.id,
       });
-
-      const payload = {
-        userId: user.id,
-        accountId: newAccount.id,
-        rolId: studentRole.id,
-        loginRol: studentRole.name,
-      };
-      const token = await createAccessToken({ payload });
+      const token = await createAccessToken({
+        payload: {
+          userId: user.id,
+          accountId: newAccount.id,
+          rolId: studentRole.id,
+          loginRol: studentRole.name,
+        },
+      });
       return res.json({ message: "Usuario creado y autenticado", token });
     }
 
-    const roleEstudiante = account.roles.find((r) => r.name === "Estudiante");
-    const rolId = roleEstudiante ? roleEstudiante.id : studentRole.id;
-    const loginRol = roleEstudiante ? roleEstudiante.name : studentRole.name;
-
-    const payload = {
-      userId: account.userId,
-      accountId: account.id,
-      rolId,
-      loginRol,
-    };
-    const token = await createAccessToken({ payload });
+    // 3. Ya tiene cuenta → login (crear token)
+    const roleEstudiante = account.roles?.find((r) => r.name === "Estudiante");
+    const rolId = roleEstudiante?.id ?? studentRole.id;
+    const loginRol = roleEstudiante?.name ?? studentRole.name;
+    const token = await createAccessToken({
+      payload: {
+        userId: account.userId,
+        accountId: account.id,
+        rolId,
+        loginRol,
+      },
+    });
     res.json({ message: "User authenticated", token });
   } catch (error) {
     console.error("Error loginSmistms:", error);
