@@ -70,18 +70,24 @@ export const reloadBdController = async (req, res) => {
 
     const dialect = sequelize.getDialect?.() || "sqlite";
 
-    // MySQL: deshabilitar FK para poder dropear tablas en cualquier orden
     if (dialect === "mysql") {
-      await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+      // MySQL: dropear tablas manualmente con FK deshabilitado (evita race con pool de conexiones)
+      const [results] = await sequelize.query(
+        "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE()"
+      );
+      const tables = results.map((r) => r.TABLE_NAME).filter(Boolean);
+      if (tables.length > 0) {
+        await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+        for (const t of tables) {
+          await sequelize.query(`DROP TABLE IF EXISTS \`${t}\``);
+        }
+        await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
+      }
     }
 
-    // 1) Dropea TODAS las tablas y las vuelve a crear según los modelos
-    await sequelize.sync({ force: true });
-    console.log("📦 Tablas recreadas con sequelize.sync({ force: true })");
-
-    if (dialect === "mysql") {
-      await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
-    }
+    // 1) Crea tablas según modelos (ya están vacías si es MySQL)
+    await sequelize.sync({ force: dialect !== "mysql" });
+    console.log("📦 Tablas recreadas");
 
     // 2) Vuelve a insertar los datos desde backup.json
     await insertData();
