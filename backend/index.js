@@ -126,7 +126,7 @@ export async function main() {
   try {
     await sequelize.authenticate();
     //await sequelize.sync({ alter: true }); // Añade columnas nuevas (imagen, imageUrl) si faltan
-   /*  await sequelize.sync({ force: true });
+/* await sequelize.sync({ force: true });
      await insertData();   */
 
 

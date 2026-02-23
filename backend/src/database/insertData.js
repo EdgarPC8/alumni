@@ -69,7 +69,7 @@ export const insertData = async () => {
     const jsonData = JSON.parse(data);
 
     // Limpiar tablas antes de insertar (evita UNIQUE constraint con ids existentes)
-    await sequelize.query("PRAGMA foreign_keys = OFF");
+    await sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
     const tablesToTruncate = [
       "quiz_answers", "quiz_options", "quiz_attempts", "quiz_quizzes_users",
       "quiz_questions", "quiz_quizzes",
@@ -86,7 +86,7 @@ export const insertData = async () => {
         // ignorar si la tabla no existe
       }
     }
-    await sequelize.query("PRAGMA foreign_keys = ON");
+    await sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
 
     // Limpieza de QuizAnswers (selectedOptionIds)
     if (Array.isArray(jsonData.QuizAnswers)) {
